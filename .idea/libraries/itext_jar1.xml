@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="itext.jar1">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/itext.jar.zip!/" />
+    </SOURCES>
+    <excluded>
+      <root url="jar://$USER_HOME$/Downloads/itext.jar.zip!/" />
+    </excluded>
+  </library>
+</component>
