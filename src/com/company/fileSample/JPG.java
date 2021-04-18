@@ -59,10 +59,31 @@ public class JPG {
             e.printStackTrace();
         }
     }
-    public void readMetaData(){
-        File jpg = new File(jpgPath);
+    public static void readMetaData(InputStream jpgLink,String jpgPath){
+        if (jpgLink==null){
+            File jpg = new File(jpgPath);
+            try {
+                Metadata metadata = ImageMetadataReader.readMetadata(jpg);
+                for (Directory directory : metadata.getDirectories()) {
+                    for (Tag tag : directory.getTags()) {
+                        System.out.println(tag);
+                    }
+                }
+                // obtain the Exif SubIFD directory
+                ExifSubIFDDirectory directory
+                        = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+
+// query the datetime tag's value
+//                Date date = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+//                System.out.println(date.getTime());
+            } catch (ImageProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
         try {
-            Metadata metadata = ImageMetadataReader.readMetadata(jpg);
+            Metadata metadata = ImageMetadataReader.readMetadata(jpgLink);
             for (Directory directory : metadata.getDirectories()) {
                 for (Tag tag : directory.getTags()) {
                     System.out.println(tag);
@@ -73,12 +94,15 @@ public class JPG {
                     = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 
 // query the datetime tag's value
-            Date date = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
-            System.out.println(date.getTime());
+//            if (directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)!=null){
+//                Date date = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+//                System.out.println(date.getTime());
+//            }
         } catch (ImageProcessingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
         }
     }
 }

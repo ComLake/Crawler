@@ -2,7 +2,11 @@ package com.company.automate;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 
+import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 /***Xpath=//tagname[@Attribute='Value']***/
@@ -52,9 +56,17 @@ public class RuntimeBot {
             case "yahoo":
                 webDriver.get("https://login.yahoo.com/");
                 //something likes id
+                Actions builder = new Actions(webDriver);
                 webDriver.findElement(By.cssSelector("#login-username")).sendKeys("Thiet Nguyen");
                 Thread.sleep(4000);
-                webDriver.findElement(By.cssSelector("#mbr-forgot-link")).click();
+                WebElement link = webDriver.findElement(By.cssSelector("#mbr-forgot-link"));
+                //builder.moveToElement(link).keyUp(link, Keys.SHIFT).build();
+                Action seriesOfActions;
+                seriesOfActions = builder.keyDown(link,Keys.SHIFT)//click
+                        .keyUp(link,Keys.SHIFT).build();//release
+                seriesOfActions.perform();
+                Thread.sleep(3000);
+                webDriver.quit();
                 break;
             case "youtube":
                 webDriver.get("https://www.youtube.com/");
