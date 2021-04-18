@@ -3,7 +3,9 @@ package com.company;
 import com.company.fileSample.CSV;
 import com.company.fileSample.DCM;
 import com.company.fileSample.JPG;
+import com.company.fileSample.ZIP;
 import com.company.hungry_worm.CrackCrack;
+import org.openqa.selenium.io.Zip;
 
 import java.io.*;
 import java.util.Scanner;
@@ -15,11 +17,12 @@ public class Main {
 //        DCM dcm = new DCM();
 //        CSV csv = new CSV("C:\\Users\\User\\Downloads\\TechCrunchcontinentalUSA.csv");
 //        csv.readAll();
-        String link = "https://photo-zmp3.zadn.vn/audio_default.png";
+//        String link = "https://photo-zmp3.zadn.vn/audio_default.png";
 ////        Scanner scanner = new Scanner(System.in);
 ////        link = scanner.nextLine();
 //        File file = new File("D:\\javaTransfer\\downloadedModel\\audio_default.png");
-        CrackCrack crackCrack = new CrackCrack(link,null);
-        crackCrack.run();
+//        CrackCrack crackCrack = new CrackCrack(link,null);
+//        crackCrack.run();
+//        ZIP.readZip("C:\\Users\\User\\Downloads\\archive.zip");
     }
 }
