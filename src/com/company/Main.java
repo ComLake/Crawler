@@ -4,6 +4,7 @@ import com.company.fileSample.CSV;
 import com.company.fileSample.DCM;
 import com.company.fileSample.JPG;
 import com.company.fileSample.ZIP;
+import com.company.hungry_worm.Automation;
 import com.company.hungry_worm.CrackCrack;
 import org.openqa.selenium.io.Zip;
 
@@ -21,8 +22,11 @@ public class Main {
 ////        Scanner scanner = new Scanner(System.in);
 ////        link = scanner.nextLine();
 //        File file = new File("D:\\javaTransfer\\downloadedModel\\audio_default.png");
-//        CrackCrack crackCrack = new CrackCrack(link,null);
+//        File file = new File("C:\\Users\\User\\Downloads\\archive.zip");
+//        CrackCrack crackCrack = new CrackCrack(null,file);
 //        crackCrack.run();
 //        ZIP.readZip("C:\\Users\\User\\Downloads\\archive.zip");
+        Automation automation = new Automation();
+        automation.crawlFile();
     }
 }

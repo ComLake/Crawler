@@ -1,6 +1,7 @@
 package com.company.hungry_worm;
 
 import com.company.fileSample.JPG;
+import com.company.fileSample.ZIP;
 import org.openqa.selenium.net.UrlChecker;
 
 import java.io.*;
@@ -20,6 +21,8 @@ public class CrackCrack implements Runnable {
 
     @Override
     public void run() {
-
+        ZIP zipFile = new ZIP(fileLocation.getAbsolutePath());
+        zipFile.readZip();
     }
+
 }
