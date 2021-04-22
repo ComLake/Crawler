@@ -30,17 +30,20 @@ public class Automation {
         webDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
         webDriver.get("https://www.kaggle.com/");
         loginMachine(webDriver,"https://www.kaggle.com/");
-        String keySearch="";
-        switch (url){
-            case "xray":
-                keySearch = "xray";
-                break;
-            case "ct_scan":
-                keySearch = "ct scan";
-                break;
-            default:
-                break;
-        }
+        String keySearch=url;
+//        switch (url){
+//            case "xray":
+//                keySearch = "xray";
+//                break;
+//            case "ct_scan":
+//                keySearch = "ct scan";
+//                break;
+//            case "dcm":
+//                keySearch = "dicom";
+//                break;
+//            default:
+//                break;
+//        }
         try {
             webDriver.findElement(By.xpath("//input[@aria-label='Search']")).click();
             Thread.sleep(1000);

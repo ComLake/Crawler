@@ -6,6 +6,7 @@ import com.company.fileSample.JPG;
 import com.company.fileSample.ZIP;
 import com.company.hungry_worm.Automation;
 import com.company.hungry_worm.CrackCrack;
+import com.company.raw.FileAnalysis;
 import org.openqa.selenium.io.Zip;
 
 import java.io.*;
@@ -13,20 +14,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        JPG jpg = new JPG("C:\\Users\\User\\Downloads\\love_text.png","C:\\Users\\User\\Downloads\\love_text.jpg");
-//        JPG.readMetaData(null,"D:\\javaTransfer\\downloadedModel\\audio_default.png");
-//        DCM dcm = new DCM();
-//        CSV csv = new CSV("C:\\Users\\User\\Downloads\\TechCrunchcontinentalUSA.csv");
-//        csv.readAll();
-//        String link = "https://photo-zmp3.zadn.vn/audio_default.png";
-////        Scanner scanner = new Scanner(System.in);
-////        link = scanner.nextLine();
-//        File file = new File("D:\\javaTransfer\\downloadedModel\\audio_default.png");
-//        File file = new File("C:\\Users\\User\\Downloads\\archive.zip");
-//        CrackCrack crackCrack = new CrackCrack(null,file);
-//        crackCrack.run();
-//        ZIP.readZip("C:\\Users\\User\\Downloads\\archive.zip");
-        Automation automation = new Automation();
-        automation.crawlFile();
+        FileAnalysis analysis = new FileAnalysis("C:\\Users\\User\\Downloads\\archive");
+        analysis.writeTextFile();
     }
 }
