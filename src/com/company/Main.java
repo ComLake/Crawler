@@ -14,7 +14,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        FileAnalysis analysis = new FileAnalysis("C:\\Users\\User\\Downloads\\archive");
-        analysis.writeTextFile();
+//        CSV csv = new CSV("C:\\Users\\User\\Downloads\\metadata.csv");
+//        csv.readAll();
+//        DCM dcm = new DCM();
+//       JPG.readMetaData(null,"C:\\Users\\User\\Downloads\\audio_default.png");
+//       Automation automation = new Automation();
+//       automation.crawlFile();
+        new FileAnalysis("C:\\Users\\User\\Downloads\\data.def","C:\\Users\\User\\Downloads\\def2.txt");
     }
 }

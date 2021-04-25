@@ -4,11 +4,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.kohsuke.github.GitHub;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,47 +20,55 @@ import java.util.concurrent.TimeUnit;
 
 public class Automation {
     private String pathDriver = "C:\\selenium\\msedgedriver.exe";
-    public void crawlFile(){
+    public void crawl(){
         String url = "";
-        Scanner scanner = new Scanner(System.in);
+        String searchable = "";
         System.out.println("Which website you wanna get the dataset ?");
-        url = scanner.nextLine();
+        url = new Scanner(System.in).nextLine();
+        System.out.println("What do you wanna search ?");
+        searchable = new Scanner(System.in).nextLine();
         System.setProperty("webdriver.edge.driver",pathDriver);
         WebDriver webDriver = new EdgeDriver();
         webDriver.manage().window().maximize();
         webDriver.manage().deleteAllCookies();
         webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
         webDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
-        webDriver.get("https://www.kaggle.com/");
-        loginMachine(webDriver,"https://www.kaggle.com/");
-        String keySearch=url;
-//        switch (url){
-//            case "xray":
-//                keySearch = "xray";
-//                break;
-//            case "ct_scan":
-//                keySearch = "ct scan";
-//                break;
-//            case "dcm":
-//                keySearch = "dicom";
-//                break;
-//            default:
-//                break;
-//        }
-        try {
-            webDriver.findElement(By.xpath("//input[@aria-label='Search']")).click();
-            Thread.sleep(1000);
-            webDriver.findElement(By.xpath("//input[@data-testid='searchInputBarInputElement']")).sendKeys(keySearch);
-            Thread.sleep(1000);
-            webDriver.findElement(By.xpath("//button[@aria-label='search']")).click();
-            Thread.sleep(1000);
-            webDriver.findElement(By.xpath("//p[contains(text(),'Datasets')]")).click();
-            Thread.sleep(1000);
-            webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[4]/div[2]/div/div/div[2]/div[2]/div[2]/a[1]/li/div/div[2]/div[2]/h6")).click();
-            Thread.sleep(1000);
-            webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[5]/div[2]/div[1]/div/div/div[2]/div[2]/div[1]/div[2]/a")).click();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        String keySearch=searchable;
+        switch (url){
+            case "kaggle":
+                webDriver.get("https://www.kaggle.com/");
+                loginMachine(webDriver,"https://www.kaggle.com/");
+                try {
+                    webDriver.findElement(By.xpath("//input[@aria-label='Search']")).click();
+                    Thread.sleep(1000);
+                    webDriver.findElement(By.xpath("//input[@data-testid='searchInputBarInputElement']")).sendKeys(keySearch);
+                    Thread.sleep(1000);
+                    webDriver.findElement(By.xpath("//button[@aria-label='search']")).click();
+                    Thread.sleep(1000);
+                    webDriver.findElement(By.xpath("//p[contains(text(),'Datasets')]")).click();
+                    Thread.sleep(1000);
+                    webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[4]/div[2]/div/div/div[2]/div[2]/div[2]/a[1]/li/div/div[2]/div[2]/h6")).click();
+                    Thread.sleep(1000);
+                    webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[5]/div[2]/div[1]/div/div/div[2]/div[2]/div[1]/div[2]/a")).click();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "github":
+                webDriver.get("https://github.com/");
+                webDriver.findElement(By.xpath("/html/body/div[1]/header/div/div[2]/div[2]/div/div/div/form/label/input[1]")).sendKeys(keySearch);
+//                try {
+//                    Robot robot = new Robot();
+//                    Thread.sleep(3000);
+//                    robot.keyPress(KeyEvent.VK_ENTER);
+//                } catch (AWTException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+                break;
+            default:
+                break;
         }
     }
     public void loginMachine(WebDriver webDriver,String website){
