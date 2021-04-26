@@ -19,7 +19,7 @@ public class FileAnalysis {
             case "This is directory":
                 break;
             case "This is file":
-                unzipFileTxt();
+                unzipFileDEF();
                 break;
             case "File is not found":
                 System.out.println("Need to be checked");
@@ -153,7 +153,7 @@ public class FileAnalysis {
             e.printStackTrace();
         }
     }
-    public void zipFileTxt(){
+    public void zipFileDEF(){
         File file = new File(pathFile);
         try {
             FileInputStream fIS = new FileInputStream(file);
@@ -173,7 +173,7 @@ public class FileAnalysis {
             e.printStackTrace();
         }
     }
-    public void unzipFileTxt(){
+    public void unzipFileDEF(){
         try {
             FileInputStream fIS = new FileInputStream(new File(pathFile));
             FileOutputStream fOS = new FileOutputStream(new File(desFile));

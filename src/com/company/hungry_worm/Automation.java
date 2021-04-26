@@ -57,15 +57,21 @@ public class Automation {
             case "github":
                 webDriver.get("https://github.com/");
                 webDriver.findElement(By.xpath("/html/body/div[1]/header/div/div[2]/div[2]/div/div/div/form/label/input[1]")).sendKeys(keySearch);
-//                try {
-//                    Robot robot = new Robot();
-//                    Thread.sleep(3000);
-//                    robot.keyPress(KeyEvent.VK_ENTER);
-//                } catch (AWTException e) {
-//                    e.printStackTrace();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Robot robot = new Robot();
+                    Thread.sleep(3000);
+                    robot.keyPress(KeyEvent.VK_ENTER);
+                    Thread.sleep(3000);
+                    webDriver.findElement(By.xpath("/html/body/div[4]/main/div/div[3]/div/ul/li[1]/div[2]/div[1]/a")).click();
+                    Thread.sleep(3000);
+                    webDriver.findElement(By.xpath("/html/body/div[4]/div/main/div[2]/div/div/div[2]/div[1]/div[1]/span/get-repo/details")).click();
+                    Thread.sleep(3000);
+                    webDriver.findElement(By.xpath("/html/body/div[4]/div/main/div[2]/div/div/div[2]/div[1]/div[1]/span/get-repo/details/div/div/div[1]/ul/li[2]/a")).click();
+                } catch (AWTException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;

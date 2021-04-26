@@ -14,12 +14,10 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        CSV csv = new CSV("C:\\Users\\User\\Downloads\\metadata.csv");
-//        csv.readAll();
-//        DCM dcm = new DCM();
-//       JPG.readMetaData(null,"C:\\Users\\User\\Downloads\\audio_default.png");
 //       Automation automation = new Automation();
-//       automation.crawlFile();
-        new FileAnalysis("C:\\Users\\User\\Downloads\\data.def","C:\\Users\\User\\Downloads\\def2.txt");
+//       automation.crawl();
+//       new FileAnalysis("C:\\Users\\User\\Downloads\\au.def","C:\\Users\\User\\Downloads\\audio_default.png");
+        ZIP zip = new ZIP("C:\\Users\\User\\Downloads\\ruffle");
+        zip.zipFolder("C:\\Users\\User\\Downloads\\ruffle.zip");
     }
 }
