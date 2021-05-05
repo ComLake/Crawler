@@ -30,7 +30,7 @@ For everyone
 
 ## Built With
 
-* [Selenium](https://www.selenium.dev/)
+* [Selenium](https://www.selenium.dev/) - Automation WebDriver
 * [JAVA](https://www.java.com/en/) - Main Programming Language
 
 ## Contributing
