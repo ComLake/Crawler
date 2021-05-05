@@ -1,5 +1,11 @@
 package com.company.hungry_worm;
 
+import netscape.javascript.JSObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,17 +15,123 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.seleniumhq.jetty9.util.UrlEncoded;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Automation {
+    private static String GITHUB_API_BASE_URL ="https://api.github.com/";
+    private static String KAGGLE_API_BASE_URL = "https://www.kaggle.com/";
+    private static String KAGGLE_API_SEARCH = "search?q=";
+    private static String GITHUB_API_SEARCH_REPOSITORIES="search/repositories?q=";
+    private static String GITHUB_REPOS = "repos/";
+    private static String GITHUB_ZIP_DOWNLOAD = "zipball/master";
     private String pathDriver = "C:\\selenium\\msedgedriver.exe";
+    private ArrayList<String>downloadUrl;
+
+    public Automation() {
+        downloadUrl = new ArrayList<>();
+    }
+
+    public void dynamicPOSTRequest(String url){
+        try {
+            URL direct = new URL(url);
+            Map<String,Object> params = new LinkedHashMap<>();
+            params.put("data","Thiet");
+            params.put("age","22");
+            StringBuilder postData = new StringBuilder();
+            for (Map.Entry<String,Object>param : params.entrySet()) {
+                if (postData.length()!=0) {
+                    postData.append('&');
+                }
+                    postData.append(URLEncoder.encode(param.getKey(),"UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()),"UTF-8"));
+            }
+            byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+            HttpURLConnection urlConnection = (HttpURLConnection)direct.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            urlConnection.setRequestProperty("Content-Length",String.valueOf(postDataBytes.length));
+            urlConnection.setDoOutput(true);
+            urlConnection.getOutputStream().write(postDataBytes);
+            BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(urlConnection.
+                    getInputStream(),"UTF-8"));
+            String inputLine;
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            while((inputLine = in.readLine())!=null){
+                response.append(inputLine+"\n");
+            }
+            bufferedInput.close();
+            System.out.println(response.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void dynamicGETRequest(){
+        try {
+            System.out.println("Please enter the key set");
+            String search = (new Scanner(System.in).nextLine());
+            String url = GITHUB_API_BASE_URL+GITHUB_API_SEARCH_REPOSITORIES+search;
+            URL direct = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection)direct.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent","Mozilla/5.0");
+            int responseCode = urlConnection.getResponseCode();
+            System.out.println("\nSending 'GET' Request to URL"+url);
+            System.out.println("Response code :"+responseCode);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(urlConnection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while((inputLine = in.readLine())!=null){
+                response.append(inputLine+"\n");
+            }
+            in.close();
+            System.out.println("Result of JSON Object reading response");
+            System.out.println("---------------------------------------");
+            System.out.println(response.toString());
+            JSONObject myResponse = new JSONObject(response.toString());
+            JSONArray array = myResponse.getJSONArray("items");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject object = (JSONObject)array.get(i);
+                downloadUrl.add(object.getString("archive_url").replace("{archive_format}{/ref}",GITHUB_ZIP_DOWNLOAD));
+            }
+            String urlDownload = downloadUrl.get(0);
+            System.out.println("Download the zip file"+ urlDownload +" illegally..");
+            System.setProperty("webdriver.edge.driver",pathDriver);
+            WebDriver webDriver = new EdgeDriver();
+            webDriver.manage().window().maximize();
+            webDriver.manage().deleteAllCookies();
+            webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+            webDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+            webDriver.get(urlDownload);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+    }
     public void crawl(){
         String url = "";
         String searchable = "";

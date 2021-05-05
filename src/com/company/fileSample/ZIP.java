@@ -14,7 +14,6 @@ public class ZIP {
     public ZIP(String path) {
         this.path = path;
         fileList = new ArrayList<>();
-        generateFileList(new File(path));
     }
 
     public String getPath() {
@@ -69,6 +68,7 @@ public class ZIP {
         }
     }
     public void zipFolder(String des){
+        generateFileList(new File(path));
         try {
             FileOutputStream fileOS = new FileOutputStream(des);
             ZipOutputStream zipOS = new ZipOutputStream(fileOS);
@@ -139,6 +139,36 @@ public class ZIP {
             zipOS.close();
             fileIS.close();
             System.out.println("Finish zipping");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void unZip(String des){
+        File file = new File(des);
+        if (!file.exists()){
+            file.mkdir();
+        }
+        try {
+            ZipInputStream zipIS = new ZipInputStream(new FileInputStream(path));
+            ZipEntry zipEntry = zipIS.getNextEntry();
+            while (zipEntry!=null){
+                String fileName = zipEntry.getName();
+                File newFile = new File(des + File.separator + fileName);
+                System.out.println("Unzipping "+newFile.getAbsoluteFile() +".....");
+                new File(newFile.getParent()).mkdir();
+                FileOutputStream fileOS = new FileOutputStream(newFile);
+                int len;
+                while ((len=zipIS.read())!=-1){
+                    fileOS.write(len);
+                }
+                fileOS.close();
+                zipEntry = zipIS.getNextEntry();
+            }
+            zipIS.closeEntry();
+            zipIS.close();
+            System.out.println("Successfully unzipped");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
