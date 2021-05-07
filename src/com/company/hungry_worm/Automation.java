@@ -3,6 +3,7 @@ package com.company.hungry_worm;
 import com.company.automate.EventCapture;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import netscape.javascript.JSObject;
+import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -40,7 +42,7 @@ public class Automation {
     private static String GITHUB_API_SEARCH_REPOSITORIES="search/repositories?q=";
     private static String GITHUB_REPOS = "repos/";
     private static String GITHUB_ZIP_DOWNLOAD = "zipball/master";
-    private String pathDriver = "C:\\selenium\\msedgedriver.exe";
+    private String pathDriver = "C:\\selenium\\chromedriver.exe";
     private ArrayList<String>downloadUrl;
 
     public Automation() {
@@ -88,13 +90,13 @@ public class Automation {
             e.printStackTrace();
         }
     }
-    public EdgeOptions setUpCustomizeBrowser(){
-        EdgeOptions edgeOptions = new EdgeOptions();
+    public ChromeOptions setUpCustomizeBrowser(){
+        ChromeOptions chromeOptions = new ChromeOptions();
         Map<String,String> ePref = new HashMap<String, String>();
         String downloadFolder = "C:\\Users\\User\\Downloads";
         ePref.put("download.default_directory",downloadFolder);
-        edgeOptions.setExperimentalOption("prefs",ePref);
-        return edgeOptions;
+        chromeOptions.setExperimentalOption("prefs",ePref);
+        return chromeOptions;
     }
     public void dynamicGETRequest(){
         try {
@@ -129,8 +131,8 @@ public class Automation {
             String urlDownload = downloadUrl.get(0);
             System.out.println("**いただきます !**");
             System.out.println("Downloading the zip file"+ urlDownload +" illegally..");
-            System.setProperty("webdriver.edge.driver",pathDriver);
-            WebDriver webDriver = new EdgeDriver(setUpCustomizeBrowser());
+            System.setProperty("webdriver.chrome.driver",pathDriver);
+            WebDriver webDriver = new ChromeDriver(setUpCustomizeBrowser());
             EventFiringWebDriver eventDriver = new EventFiringWebDriver(webDriver);
             EventCapture listener = new EventCapture();
             eventDriver.register(listener);
@@ -139,8 +141,10 @@ public class Automation {
             eventDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
             eventDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
             eventDriver.get(urlDownload);
-            JavascriptExecutor notification = (JavascriptExecutor)webDriver;
-            notification.executeScript("alert('Downloaded successfully !');");
+            eventDriver.close();
+            eventDriver.quit();
+            System.exit(0);
+            System.out.println("Error still running");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -156,8 +160,8 @@ public class Automation {
         url = new Scanner(System.in).nextLine();
         System.out.println("What do you wanna search ?");
         searchable = new Scanner(System.in).nextLine();
-        System.setProperty("webdriver.edge.driver",pathDriver);
-        WebDriver webDriver = new EdgeDriver();
+        System.setProperty("webdriver.chrome.driver",pathDriver);
+        WebDriver webDriver = new ChromeDriver();
         webDriver.manage().window().maximize();
         webDriver.manage().deleteAllCookies();
         webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);

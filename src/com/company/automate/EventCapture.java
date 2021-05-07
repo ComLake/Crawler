@@ -5,6 +5,7 @@ import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.testng.internal.EclipseInterface;
 
 import java.io.File;
+import java.util.Set;
 
 public class EventCapture implements WebDriverEventListener {
     @Override
@@ -34,27 +35,40 @@ public class EventCapture implements WebDriverEventListener {
 
     @Override
     public void afterNavigateTo(String url, WebDriver driver) {
+        //get parent window handle
         String mainWindow = driver.getWindowHandle();
+        //open new tab in same browser in order to go to the downloads site
         JavascriptExecutor js = (JavascriptExecutor)driver;
-        for (String winHandle:driver.getWindowHandles()) {
-            driver.switchTo().window(winHandle);
+        js.executeScript("window.open()");
+        //get all windows handles
+        Set<String>allWindowHandles = driver.getWindowHandles();
+        for (String winHandle:allWindowHandles) {
+            if (!winHandle.equals(mainWindow)){
+                driver.switchTo().window(winHandle);
+            }
         }
-        driver.get("edge://downloads");
+        //navigate to the download site
+        driver.get("chrome://downloads/");
         JavascriptExecutor next_js = (JavascriptExecutor)driver;
-        Long percentage = (long) 0;
+        double percentage = (double) 0;
         while(percentage!= 100){
             try{
-//                percentage = (Long)next_js.executeScript("return document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList downloads-item').shadowRoot.querySelector('#progress').value");
+                percentage = (Long)next_js.executeScript("return document" +
+                        ".querySelector('downloads-manager')" +
+                        ".shadowRoot.querySelector('#downloadsList downloads-item')" +
+                        ".shadowRoot.querySelector('#progress').value");
                 System.out.println(percentage);
+                Thread.sleep(100);
             }catch (Exception e){
                 e.printStackTrace();
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
+        String fileName = (String)next_js.executeScript("return document" +
+                ".querySelector('downloads-manager')" +
+                ".shadowRoot.querySelector('#downloadsList downloads-item')" +
+                ".shadowRoot.querySelector('div#content #file-link').text");
+        System.out.println("Details of Downloaded Files");
+        System.out.println("Downloaded File Name: " + fileName);
     }
 
     @Override
