@@ -1,5 +1,7 @@
 package com.company.hungry_worm;
 
+import com.company.automate.EventCapture;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,10 +14,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.kohsuke.github.GitHub;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.seleniumhq.jetty9.util.UrlEncoded;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -83,9 +88,17 @@ public class Automation {
             e.printStackTrace();
         }
     }
+    public EdgeOptions setUpCustomizeBrowser(){
+        EdgeOptions edgeOptions = new EdgeOptions();
+        Map<String,String> ePref = new HashMap<String, String>();
+        String downloadFolder = "C:\\Users\\User\\Downloads";
+        ePref.put("download.default_directory",downloadFolder);
+        edgeOptions.setExperimentalOption("prefs",ePref);
+        return edgeOptions;
+    }
     public void dynamicGETRequest(){
         try {
-            System.out.println("Please enter the key set");
+            System.out.println("Please enter the key set ");
             String search = (new Scanner(System.in).nextLine());
             String url = GITHUB_API_BASE_URL+GITHUB_API_SEARCH_REPOSITORIES+search;
             URL direct = new URL(url);
@@ -105,22 +118,29 @@ public class Automation {
             in.close();
             System.out.println("Result of JSON Object reading response");
             System.out.println("---------------------------------------");
-            System.out.println(response.toString());
             JSONObject myResponse = new JSONObject(response.toString());
             JSONArray array = myResponse.getJSONArray("items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = (JSONObject)array.get(i);
-                downloadUrl.add(object.getString("archive_url").replace("{archive_format}{/ref}",GITHUB_ZIP_DOWNLOAD));
+                String target = object.getString("archive_url").replace("{archive_format}{/ref}",GITHUB_ZIP_DOWNLOAD);
+                System.out.println(target);
+                downloadUrl.add(target);
             }
             String urlDownload = downloadUrl.get(0);
-            System.out.println("Download the zip file"+ urlDownload +" illegally..");
+            System.out.println("**いただきます !**");
+            System.out.println("Downloading the zip file"+ urlDownload +" illegally..");
             System.setProperty("webdriver.edge.driver",pathDriver);
-            WebDriver webDriver = new EdgeDriver();
-            webDriver.manage().window().maximize();
-            webDriver.manage().deleteAllCookies();
-            webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
-            webDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
-            webDriver.get(urlDownload);
+            WebDriver webDriver = new EdgeDriver(setUpCustomizeBrowser());
+            EventFiringWebDriver eventDriver = new EventFiringWebDriver(webDriver);
+            EventCapture listener = new EventCapture();
+            eventDriver.register(listener);
+            eventDriver.manage().window().maximize();
+            eventDriver.manage().deleteAllCookies();
+            eventDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+            eventDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+            eventDriver.get(urlDownload);
+            JavascriptExecutor notification = (JavascriptExecutor)webDriver;
+            notification.executeScript("alert('Downloaded successfully !');");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -128,9 +148,6 @@ public class Automation {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        catch (ParseException e) {
-//            e.printStackTrace();
-//        }
     }
     public void crawl(){
         String url = "";

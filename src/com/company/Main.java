@@ -14,6 +14,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("     __________\n" +
+                " ___/  ______  \\_____\n" +
+                "(o____/      \\___))__)");
+
+        System.out.println("------------------------");
        Automation automation = new Automation();
        automation.dynamicGETRequest();
 //       new FileAnalysis("C:\\Users\\User\\Downloads\\au.def","C:\\Users\\User\\Downloads\\audio_default.png");

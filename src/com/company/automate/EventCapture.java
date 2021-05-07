@@ -1,10 +1,10 @@
 package com.company.automate;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.WebDriverEventListener;
+import org.testng.internal.EclipseInterface;
+
+import java.io.File;
 
 public class EventCapture implements WebDriverEventListener {
     @Override
@@ -34,7 +34,27 @@ public class EventCapture implements WebDriverEventListener {
 
     @Override
     public void afterNavigateTo(String url, WebDriver driver) {
-
+        String mainWindow = driver.getWindowHandle();
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        for (String winHandle:driver.getWindowHandles()) {
+            driver.switchTo().window(winHandle);
+        }
+        driver.get("edge://downloads");
+        JavascriptExecutor next_js = (JavascriptExecutor)driver;
+        Long percentage = (long) 0;
+        while(percentage!= 100){
+            try{
+//                percentage = (Long)next_js.executeScript("return document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList downloads-item').shadowRoot.querySelector('#progress').value");
+                System.out.println(percentage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -44,7 +64,6 @@ public class EventCapture implements WebDriverEventListener {
 
     @Override
     public void afterNavigateBack(WebDriver driver) {
-
     }
 
     @Override
@@ -104,7 +123,7 @@ public class EventCapture implements WebDriverEventListener {
 
     @Override
     public void afterScript(String script, WebDriver driver) {
-
+        System.out.println("Those current downloaded file in here");
     }
 
     @Override
