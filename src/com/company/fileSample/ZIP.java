@@ -42,7 +42,7 @@ public class ZIP {
         }
     }
 
-    public String fileFormat(String name) {
+    public static String fileFormat(String name) {
         return name.substring(name.lastIndexOf(".") + 1);
     }
 
@@ -53,7 +53,7 @@ public class ZIP {
         }
     }
     public String generateZipEntry(String file){
-        return file.substring(path.length()+1,file.length());
+        return file.substring(path.length(),file.length());
     }
     public void generateFileList(File file){
         //add file

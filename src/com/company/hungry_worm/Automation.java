@@ -1,6 +1,7 @@
 package com.company.hungry_worm;
 
 import com.company.automate.EventCapture;
+import com.company.helper.Helper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import netscape.javascript.JSObject;
 import org.checkerframework.checker.units.qual.C;
@@ -129,7 +130,6 @@ public class Automation {
                 downloadUrl.add(target);
             }
             String urlDownload = downloadUrl.get(0);
-            System.out.println("**いただきます !**");
             System.out.println("Downloading the zip file"+ urlDownload +" illegally..");
             System.setProperty("webdriver.chrome.driver",pathDriver);
             WebDriver webDriver = new ChromeDriver(setUpCustomizeBrowser());
@@ -141,10 +141,6 @@ public class Automation {
             eventDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
             eventDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
             eventDriver.get(urlDownload);
-            eventDriver.close();
-            eventDriver.quit();
-            System.exit(0);
-            System.out.println("Error still running");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -158,17 +154,17 @@ public class Automation {
         String searchable = "";
         System.out.println("Which website you wanna get the dataset ?");
         url = new Scanner(System.in).nextLine();
-        System.out.println("What do you wanna search ?");
-        searchable = new Scanner(System.in).nextLine();
-        System.setProperty("webdriver.chrome.driver",pathDriver);
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.manage().window().maximize();
-        webDriver.manage().deleteAllCookies();
-        webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
-        String keySearch=searchable;
         switch (url){
             case "kaggle":
+                System.out.println("What do you wanna search ?");
+                searchable = new Scanner(System.in).nextLine();
+                System.setProperty("webdriver.chrome.driver",pathDriver);
+                WebDriver webDriver = new ChromeDriver(setUpCustomizeBrowser());
+                webDriver.manage().window().maximize();
+                webDriver.manage().deleteAllCookies();
+                webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+                webDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+                String keySearch=searchable;
                 webDriver.get("https://www.kaggle.com/");
                 loginMachine(webDriver,"https://www.kaggle.com/");
                 try {
@@ -182,29 +178,14 @@ public class Automation {
                     Thread.sleep(1000);
                     webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[4]/div[2]/div/div/div[2]/div[2]/div[2]/a[1]/li/div/div[2]/div[2]/h6")).click();
                     Thread.sleep(1000);
-                    webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[5]/div[2]/div[1]/div/div/div[2]/div[2]/div[1]/div[2]/a")).click();
+                    webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[5]/div[3]/div[1]/div/div/div[2]/div[2]/div[1]/div[2]/a")).click();
+                    Helper.attackDownloadingFile(webDriver);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 break;
             case "github":
-                webDriver.get("https://github.com/");
-                webDriver.findElement(By.xpath("/html/body/div[1]/header/div/div[2]/div[2]/div/div/div/form/label/input[1]")).sendKeys(keySearch);
-                try {
-                    Robot robot = new Robot();
-                    Thread.sleep(3000);
-                    robot.keyPress(KeyEvent.VK_ENTER);
-                    Thread.sleep(3000);
-                    webDriver.findElement(By.xpath("/html/body/div[4]/main/div/div[3]/div/ul/li[1]/div[2]/div[1]/a")).click();
-                    Thread.sleep(3000);
-                    webDriver.findElement(By.xpath("/html/body/div[4]/div/main/div[2]/div/div/div[2]/div[1]/div[1]/span/get-repo/details")).click();
-                    Thread.sleep(3000);
-                    webDriver.findElement(By.xpath("/html/body/div[4]/div/main/div[2]/div/div/div[2]/div[1]/div[1]/span/get-repo/details/div/div/div[1]/ul/li[2]/a")).click();
-                } catch (AWTException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                dynamicGETRequest();
                 break;
             default:
                 break;

@@ -19,11 +19,7 @@ public class Main {
                 "(o____/      \\___))__)");
 
         System.out.println("------------------------");
-       Automation automation = new Automation();
-       automation.dynamicGETRequest();
-//       new FileAnalysis("C:\\Users\\User\\Downloads\\au.def","C:\\Users\\User\\Downloads\\audio_default.png");
-//        ZIP zip = new ZIP("C:\\Users\\User\\Downloads\\archive.zip");
-//        zip.unZip("C:\\Users\\User\\Downloads\\archive");
-
+        Automation automation = new Automation();
+        automation.crawl();
     }
 }
