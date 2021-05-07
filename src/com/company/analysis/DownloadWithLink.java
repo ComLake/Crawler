@@ -1,11 +1,11 @@
-package com.company.crawler;
+package com.company.analysis;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Hunting {
+public class DownloadWithLink {
     public static void readHTML(String link){
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();

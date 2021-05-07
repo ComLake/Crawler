@@ -1,4 +1,4 @@
-package com.company.raw;
+package com.company.analysis;
 
 import java.io.*;
 import java.lang.reflect.Field;
