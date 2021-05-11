@@ -52,5 +52,6 @@ public class Helper {
         driver.quit();
         ZIP zip = new ZIP("C:\\Users\\User\\Downloads\\"+fileName);
         zip.readZip();
+//        zip.unZip("C:\\Users\\User\\Downloads\\"+fileName.replace("."));
     }
 }

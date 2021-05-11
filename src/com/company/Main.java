@@ -10,6 +10,7 @@ public class Main {
 
         System.out.println("------------------------");
         Automation automation = new Automation();
+//        automation.dynamicPOSTRequest("https://jsonplaceholder.typicode.com/posts");
         automation.crawl();
     }
 }

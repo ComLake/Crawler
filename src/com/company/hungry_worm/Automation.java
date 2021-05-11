@@ -139,7 +139,7 @@ public class Automation {
             eventDriver.manage().window().maximize();
             eventDriver.manage().deleteAllCookies();
             eventDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
-            eventDriver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+            eventDriver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
             eventDriver.get(urlDownload);
         } catch (MalformedURLException e) {
             e.printStackTrace();
