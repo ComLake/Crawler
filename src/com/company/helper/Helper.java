@@ -1,6 +1,6 @@
 package com.company.helper;
 
-import com.company.fileSample.ZIP;
+import com.company.util.ZIP;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 

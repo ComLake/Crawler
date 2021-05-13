@@ -1,6 +1,4 @@
-package com.company.fileSample;
-
-import org.openqa.selenium.io.Zip;
+package com.company.util;
 
 import java.io.*;
 import java.util.ArrayList;

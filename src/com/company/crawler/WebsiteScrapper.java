@@ -1,42 +1,24 @@
-package com.company.hungry_worm;
+package com.company.crawler;
 
-import com.company.automate.EventCapture;
+//import com.company.automate.EventCapture;
 import com.company.helper.Helper;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import netscape.javascript.JSObject;
-import org.checkerframework.checker.units.qual.C;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.kohsuke.github.GitHub;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Automation {
+public class WebsiteScrapper {
     private static String GITHUB_API_BASE_URL ="https://api.github.com/";
     private static String KAGGLE_API_BASE_URL = "https://www.kaggle.com/";
     private static String KAGGLE_API_SEARCH = "search?q=";
@@ -46,7 +28,7 @@ public class Automation {
     private String pathDriver = "C:\\selenium\\chromedriver.exe";
     private ArrayList<String>downloadUrl;
 
-    public Automation() {
+    public WebsiteScrapper() {
         downloadUrl = new ArrayList<>();
     }
 
@@ -132,15 +114,15 @@ public class Automation {
             String urlDownload = downloadUrl.get(0);
             System.out.println("Downloading the zip file"+ urlDownload +" illegally..");
             System.setProperty("webdriver.chrome.driver",pathDriver);
-            WebDriver webDriver = new ChromeDriver(setUpCustomizeBrowser());
-            EventFiringWebDriver eventDriver = new EventFiringWebDriver(webDriver);
-            EventCapture listener = new EventCapture();
-            eventDriver.register(listener);
-            eventDriver.manage().window().maximize();
-            eventDriver.manage().deleteAllCookies();
-            eventDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
-            eventDriver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-            eventDriver.get(urlDownload);
+//            WebDriver webDriver = new ChromeDriver(setUpCustomizeBrowser());
+//            EventFiringWebDriver eventDriver = new EventFiringWebDriver(webDriver);
+//            EventCapture listener = new EventCapture();
+//            eventDriver.register(listener);
+//            eventDriver.manage().window().maximize();
+//            eventDriver.manage().deleteAllCookies();
+//            eventDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
+//            eventDriver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+//            eventDriver.get(urlDownload);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
