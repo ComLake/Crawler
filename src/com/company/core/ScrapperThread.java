@@ -71,6 +71,8 @@ public class ScrapperThread extends Thread {
                     WorkPlaceManager workPlaceManager = WorkPlaceManager.getInstance();
                     workPlaceManager.addMoreItems(sources);
                     workPlaceManager.downloadToWorkPlace();
+                    System.out.println("********************************");
+                    workPlaceManager.openSources();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

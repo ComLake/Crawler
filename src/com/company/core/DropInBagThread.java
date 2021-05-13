@@ -1,5 +1,7 @@
 package com.company.core;
 
+import com.company.config.WorkPlaceManager;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,6 +45,8 @@ public class DropInBagThread extends Thread{
             }
             outputStream.close();
             inputStream.close();
+            WorkPlaceManager workPlaceManager = WorkPlaceManager.getInstance();
+            workPlaceManager.storageReport(path);
             System.out.println("Downloaded!");
         }catch (IOException e){
             e.printStackTrace();
