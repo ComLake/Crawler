@@ -9,7 +9,7 @@ Automation Crawler Website, Data Analysis using JAVA and Selenium
  Development of Data Acquisition and Integration Tool for Data Lake
 
 ## Features and Detail :
-* Automate crawl data from websites
+* Crawling data from websites
 * Data anlysis and set metadata for web dashbroad
  
 ## Target users :
@@ -31,7 +31,6 @@ For everyone
 
 ## Built With
 
-* [Selenium](https://www.selenium.dev/) - Automation WebDriver
 * [JAVA](https://www.java.com/en/) - Main Programming Language
 
 ## Contributing
