@@ -2,7 +2,7 @@
 
 <img src="https://www.ancient-origins.net/sites/default/files/field/image/Mongolian-Death-Worm.jpg" width = 400 height =250>
 
-Automation Crawler Website, Data Analysis using JAVA and Selenium 
+Crawler Website, Data Analysis using JAVA
 
 ## Getting Started
 
