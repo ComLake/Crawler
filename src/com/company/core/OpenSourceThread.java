@@ -40,6 +40,9 @@ public class OpenSourceThread extends Thread{
                     }
                     fOS.close();
                 }
+                CrackingThread cracking = new CrackingThread();
+                cracking.setTarget(newBie);
+                cracking.start();
             }
             zipInputStream.closeEntry();
             zipInputStream.close();
