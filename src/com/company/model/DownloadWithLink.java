@@ -1,4 +1,4 @@
-package com.company.util;
+package com.company.model;
 
 import java.io.*;
 import java.net.HttpURLConnection;

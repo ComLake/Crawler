@@ -1,4 +1,4 @@
-package com.company.util;
+package com.company.model;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

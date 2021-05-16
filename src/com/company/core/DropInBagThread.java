@@ -46,7 +46,7 @@ public class DropInBagThread extends Thread{
             outputStream.close();
             inputStream.close();
             WorkPlaceManager workPlaceManager = WorkPlaceManager.getInstance();
-            workPlaceManager.storageReport(path);
+            workPlaceManager.storageReport(path,link);
             System.out.println("Downloaded!");
         }catch (IOException e){
             e.printStackTrace();

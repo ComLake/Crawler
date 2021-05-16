@@ -1,22 +1,25 @@
 package com.company.core;
 
+import com.company.utils.CrawlerFormData;
+
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class OpenSourceThread extends Thread{
-    private File targetZFile;
+    private CrawlerFormData targetZFile;
     @Override
     public void run() {
         try {
-            String source = targetZFile.getAbsolutePath();
+            File targetFile = targetZFile.getFile();
+            String source = targetFile.getAbsolutePath();
             String des = source.replace(".zip","");
             File file = new File(des);
             if (!file.exists()){
                 file.mkdirs();
             }
             byte []bytes = new byte[1024];
-            FileInputStream fInputStream = new FileInputStream(targetZFile);
+            FileInputStream fInputStream = new FileInputStream(targetFile);
             ZipInputStream zipInputStream = new ZipInputStream(fInputStream);
             ZipEntry entry ;
             while ((entry = zipInputStream.getNextEntry()) !=null){
@@ -41,7 +44,8 @@ public class OpenSourceThread extends Thread{
                     fOS.close();
                 }
                 CrackingThread cracking = new CrackingThread();
-                cracking.setTarget(newBie);
+                cracking.setFileTarget(newBie);
+                cracking.setSourceLink(targetZFile.getLinkSources());
                 cracking.start();
             }
             zipInputStream.closeEntry();
@@ -54,11 +58,11 @@ public class OpenSourceThread extends Thread{
         }
     }
 
-    public File getTargetZFile() {
+    public CrawlerFormData getTargetZFile() {
         return targetZFile;
     }
 
-    public void setTargetZFile(File targetZFile) {
+    public void setTargetZFile(CrawlerFormData targetZFile) {
         this.targetZFile = targetZFile;
     }
 }

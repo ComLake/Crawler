@@ -2,6 +2,7 @@ package com.company.config;
 
 import com.company.core.DropInBagThread;
 import com.company.core.OpenSourceThread;
+import com.company.utils.CrawlerFormData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class WorkPlaceManager {
     private static WorkPlaceManager workPlaceManager;
     private final String path = "D:\\save\\sources\\";
     private List<String> sources = new ArrayList<>();
-    private List<File> zipTarget = new ArrayList<>();
+    private List<CrawlerFormData> zipTarget = new ArrayList<>();
     public WorkPlaceManager() {
     }
 
@@ -29,10 +30,10 @@ public class WorkPlaceManager {
             }
         }
     }
-    public void storageReport(String fishFile){
+    public void storageReport(String fishFile,String linkSource){
         File file = new File(fishFile);
         if (file.exists()){
-            zipTarget.add(file);
+            zipTarget.add(new CrawlerFormData(linkSource,file));
         }
     }
     public void downloadToWorkPlace() {
@@ -52,8 +53,8 @@ public class WorkPlaceManager {
         }
     }
     public void openSources(){
-        for (File zipFile:zipTarget) {
-            System.out.println("** Unzipping "+zipFile.getName()+" ...");
+        for (CrawlerFormData zipFile:zipTarget) {
+            System.out.println("** Unzipping "+zipFile.getFile().getName()+" ...");
             OpenSourceThread openSource = new OpenSourceThread();
             openSource.setTargetZFile(zipFile);
             openSource.run();
