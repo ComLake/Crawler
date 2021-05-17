@@ -13,9 +13,9 @@ public class WorkPlaceManager {
     private final String path = "D:\\save\\sources\\";
     private List<String> sources = new ArrayList<>();
     private List<CrawlerFormData> zipTarget = new ArrayList<>();
+    private String topic;
     public WorkPlaceManager() {
     }
-
     public static WorkPlaceManager getInstance() {
         if (workPlaceManager == null) {
             workPlaceManager = new WorkPlaceManager();
@@ -57,7 +57,15 @@ public class WorkPlaceManager {
             System.out.println("** Unzipping "+zipFile.getFile().getName()+" ...");
             OpenSourceThread openSource = new OpenSourceThread();
             openSource.setTargetZFile(zipFile);
+            openSource.setKeySearch(topic);
             openSource.run();
         }
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+    public String getTopic() {
+        return topic;
     }
 }

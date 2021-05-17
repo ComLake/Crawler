@@ -34,14 +34,13 @@ public class DropInBagThread extends Thread{
             BufferedOutputStream outputStream = new BufferedOutputStream(fileOS,1024);
             byte[]buffer = new byte[1024];
             double downloaded = 0.00;
-            double percentageDownloaded;
+            int percentageDownloaded;
             int read;
             while ((read = inputStream.read(buffer,0,1024))!=-1){
                 outputStream.write(buffer,0,read);
                 downloaded += read;
-                percentageDownloaded = (downloaded*100)/fileSize;
-                String percent = String.format("%.2f",percentageDownloaded);
-                System.out.println("Downloaded " + percent + "% of the file..");
+                percentageDownloaded = (int)((downloaded*100L)/fileSize);
+                System.out.println("Downloaded " + percentageDownloaded + "% of the file..");
             }
             outputStream.close();
             inputStream.close();

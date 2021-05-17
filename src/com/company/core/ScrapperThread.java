@@ -69,6 +69,7 @@ public class ScrapperThread extends Thread {
                         }
                     }
                     WorkPlaceManager workPlaceManager = WorkPlaceManager.getInstance();
+                    workPlaceManager.setTopic(keySeek);
                     workPlaceManager.addMoreItems(sources);
                     workPlaceManager.downloadToWorkPlace();
                     System.out.println("********************************");

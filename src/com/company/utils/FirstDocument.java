@@ -6,12 +6,8 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class FirstDocument {
@@ -25,7 +21,6 @@ public class FirstDocument {
 
     public FirstDocument() {
     }
-
     public long getSize() {
         return size;
     }
@@ -49,15 +44,18 @@ public class FirstDocument {
     public String getDescription() {
         return description;
     }
-
     public String getMimeType() {
         return mimeType;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     @Override
     public String toString() {
         return "FirstDocument{" +
-                "size=" + size +
+                "size=" + String.format("%,d bytes", size) +
                 ", fileName='" + fileName + '\'' +
                 ", source='" + source + '\'' +
                 ", topic='" + topic + '\'' +
@@ -72,8 +70,6 @@ public class FirstDocument {
         this.fileName = target.getName();
         mimeType = fileFormat();
         this.source = source;
-        topic = "This is topic of the file";
-        description = "This is description of the file";
         language = "National language";
         Path fileLocation = Paths.get(target.getAbsolutePath());
         try {
@@ -82,7 +78,42 @@ public class FirstDocument {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String result = toString();
-        System.out.println(result);
+        StringBuffer bufferDes = new StringBuffer();
+        description = "";
+        bufferDes.append(description);
+        if (mimeType.equals("jpg")||mimeType.equals("png")){
+            try {
+                Metadata metadata = ImageMetadataReader.readMetadata(target);
+                for (Directory directory:metadata.getDirectories()) {
+                    for (Tag tag:directory.getTags()) {
+                        bufferDes.append(tag);
+                    }
+                }
+            } catch (ImageProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (mimeType.equals("svg")){
+
+        }else if(mimeType.equals("csv")||mimeType.equals("txt")){
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader(target.getAbsolutePath()));
+                String line = "";
+                while ((line = reader.readLine())!=null){
+//                    String[]values = line.split(",");
+                    bufferDes.append(line);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (mimeType.equals("json")){
+
+        }else if (mimeType.equals("dcm")){
+
+        }
+        description = bufferDes.toString();
     }
 }

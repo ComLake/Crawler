@@ -7,6 +7,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class OpenSourceThread extends Thread{
+    private String keySearch;
     private CrawlerFormData targetZFile;
     @Override
     public void run() {
@@ -44,6 +45,7 @@ public class OpenSourceThread extends Thread{
                     fOS.close();
                 }
                 CrackingThread cracking = new CrackingThread();
+                cracking.setKeySeek(keySearch);
                 cracking.setFileTarget(newBie);
                 cracking.setSourceLink(targetZFile.getLinkSources());
                 cracking.start();
@@ -64,5 +66,13 @@ public class OpenSourceThread extends Thread{
 
     public void setTargetZFile(CrawlerFormData targetZFile) {
         this.targetZFile = targetZFile;
+    }
+
+    public String getKeySearch() {
+        return keySearch;
+    }
+
+    public void setKeySearch(String keySearch) {
+        this.keySearch = keySearch;
     }
 }
