@@ -5,12 +5,17 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
+import com.pixelmed.dicom.AttributeList;
+import com.pixelmed.dicom.AttributeTag;
+import com.pixelmed.dicom.DicomException;
+import com.pixelmed.dicom.DicomInputStream;
 
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Set;
 
-public class FirstDocument {
+public class SimpleDocument {
     private long size;
     private String fileName;
     private String source;
@@ -19,7 +24,7 @@ public class FirstDocument {
     private String description;
     private String mimeType;
 
-    public FirstDocument() {
+    public SimpleDocument() {
     }
     public long getSize() {
         return size;
@@ -54,7 +59,7 @@ public class FirstDocument {
 
     @Override
     public String toString() {
-        return "FirstDocument{" +
+        return "SimpleDocument{" +
                 "size=" + String.format("%,d bytes", size) +
                 ", fileName='" + fileName + '\'' +
                 ", source='" + source + '\'' +
@@ -111,8 +116,20 @@ public class FirstDocument {
             }
         }else if (mimeType.equals("json")){
 
-        }else if (mimeType.equals("dcm")){
-
+        }else if (mimeType.equals("DCM")||mimeType.equals("dcm")){
+            try {
+                DicomInputStream dis = new DicomInputStream(target);
+                AttributeList attributeList = new AttributeList();
+                attributeList.read(dis);
+                Set<AttributeTag>keys = attributeList.keySet();
+                for (AttributeTag key:keys) {
+                    System.out.println("("+key.getGroup()+","+key.getElement()+")"+attributeList.get(key).getDelimitedStringValuesOrEmptyString());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (DicomException e) {
+                e.printStackTrace();
+            }
         }
         description = bufferDes.toString();
     }

@@ -1,6 +1,6 @@
 package com.company.core;
 
-import com.company.utils.FirstDocument;
+import com.company.utils.SimpleDocument;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,15 +10,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class TransportThread extends Thread {
+public class UploaderThread extends Thread {
     private URL direct;
-    private FirstDocument document;
+    private SimpleDocument document;
 
-    public TransportThread(FirstDocument document) {
+    public UploaderThread(SimpleDocument document) {
         this.document = document;
         init();
     }

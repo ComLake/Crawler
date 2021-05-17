@@ -1,16 +1,16 @@
 package com.company.core;
 
-import com.company.config.WorkPlaceManager;
+import com.company.config.ConfigurationManager;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DropInBagThread extends Thread{
+public class DownloaderThread extends Thread{
     private String link;
     private String path;
 
-    public DropInBagThread(String link,String path) {
+    public DownloaderThread(String link, String path) {
         this.link = link;
         this.path = path;
     }
@@ -44,8 +44,8 @@ public class DropInBagThread extends Thread{
             }
             outputStream.close();
             inputStream.close();
-            WorkPlaceManager workPlaceManager = WorkPlaceManager.getInstance();
-            workPlaceManager.storageReport(path,link);
+            ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+            configurationManager.storageReport(path,link);
             System.out.println("Downloaded!");
         }catch (IOException e){
             e.printStackTrace();

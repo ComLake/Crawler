@@ -1,26 +1,26 @@
 package com.company.config;
 
-import com.company.core.DropInBagThread;
-import com.company.core.OpenSourceThread;
-import com.company.utils.CrawlerFormData;
+import com.company.core.DownloaderThread;
+import com.company.core.UnpackingThread;
+import com.company.utils.EmbeddedFile;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkPlaceManager {
-    private static WorkPlaceManager workPlaceManager;
+public class ConfigurationManager {
+    private static ConfigurationManager configurationManager;
     private final String path = "D:\\save\\sources\\";
     private List<String> sources = new ArrayList<>();
-    private List<CrawlerFormData> zipTarget = new ArrayList<>();
+    private List<EmbeddedFile> zipTarget = new ArrayList<>();
     private String topic;
-    public WorkPlaceManager() {
+    public ConfigurationManager() {
     }
-    public static WorkPlaceManager getInstance() {
-        if (workPlaceManager == null) {
-            workPlaceManager = new WorkPlaceManager();
+    public static ConfigurationManager getInstance() {
+        if (configurationManager == null) {
+            configurationManager = new ConfigurationManager();
         }
-        return workPlaceManager;
+        return configurationManager;
     }
 
     public void addMoreItems(ArrayList<String> items) {
@@ -33,7 +33,7 @@ public class WorkPlaceManager {
     public void storageReport(String fishFile,String linkSource){
         File file = new File(fishFile);
         if (file.exists()){
-            zipTarget.add(new CrawlerFormData(linkSource,file));
+            zipTarget.add(new EmbeddedFile(linkSource,file));
         }
     }
     public void downloadToWorkPlace() {
@@ -48,14 +48,14 @@ public class WorkPlaceManager {
             destiny.append(path);
             destiny.append(buffer);
             System.out.println("Downloading.. "+buffer + " to "+destiny);
-            DropInBagThread dropInBag = new DropInBagThread(link,destiny.toString());
+            DownloaderThread dropInBag = new DownloaderThread(link,destiny.toString());
             dropInBag.run();
         }
     }
     public void openSources(){
-        for (CrawlerFormData zipFile:zipTarget) {
+        for (EmbeddedFile zipFile:zipTarget) {
             System.out.println("** Unzipping "+zipFile.getFile().getName()+" ...");
-            OpenSourceThread openSource = new OpenSourceThread();
+            UnpackingThread openSource = new UnpackingThread();
             openSource.setTargetZFile(zipFile);
             openSource.setKeySearch(topic);
             openSource.run();

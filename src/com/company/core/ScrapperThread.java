@@ -1,6 +1,6 @@
 package com.company.core;
 
-import com.company.config.WorkPlaceManager;
+import com.company.config.ConfigurationManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ScrapperThread extends Thread {
     private static String GITHUB_API_BASE_URL ="https://api.github.com/";
@@ -68,12 +67,12 @@ public class ScrapperThread extends Thread {
                             sources.add(linkSource);
                         }
                     }
-                    WorkPlaceManager workPlaceManager = WorkPlaceManager.getInstance();
-                    workPlaceManager.setTopic(keySeek);
-                    workPlaceManager.addMoreItems(sources);
-                    workPlaceManager.downloadToWorkPlace();
+                    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+                    configurationManager.setTopic(keySeek);
+                    configurationManager.addMoreItems(sources);
+                    configurationManager.downloadToWorkPlace();
                     System.out.println("********************************");
-                    workPlaceManager.openSources();
+                    configurationManager.openSources();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

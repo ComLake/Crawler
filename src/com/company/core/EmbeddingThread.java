@@ -1,20 +1,20 @@
 package com.company.core;
 
-import com.company.utils.FirstDocument;
+import com.company.utils.SimpleDocument;
 
 import java.io.File;
 
-public class CrackingThread extends Thread {
+public class EmbeddingThread extends Thread {
     private File fileTarget;
     private String sourceLink;
     private String keySeek;
     @Override
     public void run() {
-        FirstDocument firstDocument = new FirstDocument();
-        firstDocument.setTopic(keySeek);
-        firstDocument.analysis(fileTarget,sourceLink);
-        TransportThread transportThread = new TransportThread(firstDocument);
-        transportThread.run();
+        SimpleDocument simpleDocument = new SimpleDocument();
+        simpleDocument.setTopic(keySeek);
+        simpleDocument.analysis(fileTarget,sourceLink);
+        UploaderThread uploaderThread = new UploaderThread(simpleDocument);
+        uploaderThread.run();
     }
 
     public void setFileTarget(File fileTarget) {

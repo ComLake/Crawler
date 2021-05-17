@@ -2,11 +2,11 @@ package com.company.utils;
 
 import java.io.File;
 
-public class CrawlerFormData {
+public class EmbeddedFile {
     private String linkSources;
     private File file;
 
-    public CrawlerFormData(String linkSources, File file) {
+    public EmbeddedFile(String linkSources, File file) {
         this.linkSources = linkSources;
         this.file = file;
     }

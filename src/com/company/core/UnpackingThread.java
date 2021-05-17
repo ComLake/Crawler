@@ -1,14 +1,14 @@
 package com.company.core;
 
-import com.company.utils.CrawlerFormData;
+import com.company.utils.EmbeddedFile;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class OpenSourceThread extends Thread{
+public class UnpackingThread extends Thread{
     private String keySearch;
-    private CrawlerFormData targetZFile;
+    private EmbeddedFile targetZFile;
     @Override
     public void run() {
         try {
@@ -44,7 +44,7 @@ public class OpenSourceThread extends Thread{
                     }
                     fOS.close();
                 }
-                CrackingThread cracking = new CrackingThread();
+                EmbeddingThread cracking = new EmbeddingThread();
                 cracking.setKeySeek(keySearch);
                 cracking.setFileTarget(newBie);
                 cracking.setSourceLink(targetZFile.getLinkSources());
@@ -60,11 +60,11 @@ public class OpenSourceThread extends Thread{
         }
     }
 
-    public CrawlerFormData getTargetZFile() {
+    public EmbeddedFile getTargetZFile() {
         return targetZFile;
     }
 
-    public void setTargetZFile(CrawlerFormData targetZFile) {
+    public void setTargetZFile(EmbeddedFile targetZFile) {
         this.targetZFile = targetZFile;
     }
 
