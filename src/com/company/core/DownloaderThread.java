@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DownloaderThread extends Thread{
+    private static final int BUFFER_SIZE = 4096;
     private String link;
     private String path;
 
@@ -31,12 +32,12 @@ public class DownloaderThread extends Thread{
             double fileSize = (double) urlConnection.getContentLengthLong();
             BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
             FileOutputStream fileOS = new FileOutputStream(file);
-            BufferedOutputStream outputStream = new BufferedOutputStream(fileOS,1024);
-            byte[]buffer = new byte[1024];
+            BufferedOutputStream outputStream = new BufferedOutputStream(fileOS,BUFFER_SIZE);
+            byte[]buffer = new byte[BUFFER_SIZE];
             double downloaded = 0.00;
             int percentageDownloaded;
             int read;
-            while ((read = inputStream.read(buffer,0,1024))!=-1){
+            while ((read = inputStream.read(buffer,0,BUFFER_SIZE))!=-1){
                 outputStream.write(buffer,0,read);
                 downloaded += read;
                 percentageDownloaded = (int)((downloaded*100L)/fileSize);

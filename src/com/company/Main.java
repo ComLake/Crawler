@@ -2,6 +2,8 @@ package com.company;
 
 import com.company.core.ScrapperThread;
 import com.company.crawler.WebsiteScrapper;
+import com.company.model.DownloadWithLink;
+import com.company.model.ZIP;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -15,9 +17,16 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         List<String> nameThatWebsites = new ArrayList<>();
-        System.out.println("     __________\n" +
-                " ___/  ______  \\_____\n" +
-                "(o____/      \\___))__)");
+        System.out.println("                           (o)(o)\n" +
+                "                          /     \\\n" +
+                "                         /       |\n" +
+                "                        /   \\  * |\n" +
+                "          ________     /    /\\__/\n" +
+                "  _      /        \\   /    /\n" +
+                " / \\    /  ____    \\_/    /\n" +
+                "//\\ \\  /  /    \\         /\n" +
+                "V  \\ \\/  /      \\       /\n" +
+                "    \\___/        \\_____/");
 
         System.out.println("------------------------");
         System.out.println("Give me a name");
@@ -34,5 +43,7 @@ public class Main {
             ScrapperThread scrapperThread = new ScrapperThread(websites,keyword);
             scrapperThread.run();
         }
+//        DownloadWithLink.download_method3("https://www.kaggle.com/gantlaborde/riddikulus/download","D:\\save\\sources\\archive.zip");
+//        ZIP.unzip();
     }
 }

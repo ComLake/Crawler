@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.company.core.ScrapperThread.*;
+
 public class ConfigurationManager {
     private static ConfigurationManager configurationManager;
     private final String path = "D:\\save\\sources\\";
@@ -36,11 +38,25 @@ public class ConfigurationManager {
             zipTarget.add(new EmbeddedFile(linkSource,file));
         }
     }
-    public void downloadToWorkPlace() {
+    public synchronized void downloadToWorkPlace() {
         for (String link : sources) {
-            String nameTheZip = link.replaceAll("https://api.github.com/repos","");
-            nameTheZip = nameTheZip.replaceAll("/zipball/master","");
-            nameTheZip = nameTheZip.replaceAll("/","");
+            StringBuffer linkBased = new StringBuffer();
+            StringBuffer downloadPath = new StringBuffer();
+            StringBuffer texture = new StringBuffer();
+            if (link.contains("github")){
+               linkBased.append(GITHUB_API_BASE_URL+GITHUB_REPOS);
+               downloadPath.append("/"+GITHUB_ZIP_DOWNLOAD);
+               texture.append("/");
+            }else if (link.contains("kaggle")){
+               linkBased.append(KAGGLE_API_BASE_URL);
+               downloadPath.append(KAGGLE_ZIP_DOWNLOAD);
+               texture.append("/");
+            }else {
+                System.out.println("This version does not supply for this website");
+            }
+            String nameTheZip = link.replaceAll(linkBased.toString(),"");
+            nameTheZip = nameTheZip.replaceAll(downloadPath.toString(),"");
+            nameTheZip = nameTheZip.replaceAll(texture.toString(),"");
             StringBuffer buffer = new StringBuffer();
             buffer.append(nameTheZip);
             buffer.append(".zip");
@@ -52,7 +68,7 @@ public class ConfigurationManager {
             dropInBag.run();
         }
     }
-    public void openSources(){
+    public synchronized void openSources(){
         for (EmbeddedFile zipFile:zipTarget) {
             System.out.println("** Unzipping "+zipFile.getFile().getName()+" ...");
             UnpackingThread openSource = new UnpackingThread();
