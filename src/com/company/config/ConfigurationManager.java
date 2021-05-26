@@ -1,6 +1,7 @@
 package com.company.config;
 
 import com.company.core.DownloaderThread;
+import com.company.core.ScrapperThread;
 import com.company.core.UnpackingThread;
 import com.company.utils.EmbeddedFile;
 
@@ -9,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.company.core.ScrapperThread.*;
+import static com.company.utils.Annotation.*;
 
 public class ConfigurationManager {
     private static ConfigurationManager configurationManager;
     private final String path = "D:\\save\\sources\\";
+    private List<String>websites = new ArrayList<>();
     private List<String> sources = new ArrayList<>();
     private List<EmbeddedFile> zipTarget = new ArrayList<>();
     private String topic;
@@ -89,7 +92,21 @@ public class ConfigurationManager {
             openSource.run();
         }
     }
-
+    public void addWebsitesTarget(List<String>mainDirects){
+        if (mainDirects.size()!=0){
+            for (String website:mainDirects) {
+                websites.add(website);
+            }
+        }
+    }
+    public synchronized void scrapped(){
+        if (websites.size()!=0){
+            for (String website:websites) {
+                ScrapperThread scrapperThread = new ScrapperThread(website,topic);
+                scrapperThread.run();
+            }
+        }
+    }
     public void setTopic(String topic) {
         this.topic = topic;
     }

@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.config.ConfigurationManager;
 import com.company.core.ScrapperThread;
 import com.company.crawler.WebsiteScrapper;
 import com.company.model.DownloadWithLink;
@@ -39,9 +40,18 @@ public class Main {
             nameThatWebsites.add(target);
         }
         System.out.println("\n-----------------------------------------");
-        for (String websites:nameThatWebsites) {
-            ScrapperThread scrapperThread = new ScrapperThread(websites,keyword);
-            scrapperThread.run();
-        }
+        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+        configurationManager.setTopic(keyword);
+        configurationManager.addWebsitesTarget(nameThatWebsites);
+        System.out.println("Begin scrapped");
+        configurationManager.scrapped();
+        System.out.println("End scrapped");
+        System.out.println("Begin download");
+        configurationManager.downloadToWorkPlace();
+        System.out.println("********************************");
+        System.out.println("End download");
+        System.out.println("Begin unpack");
+        configurationManager.openSources();
+        System.out.println("End unpack");
     }
 }

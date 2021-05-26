@@ -8,6 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import static com.company.utils.Annotation.defaultKName;
+import static com.company.utils.Annotation.defaultKPass;
+
 public class DownloaderThread extends Thread{
     private static final int BUFFER_SIZE = 4096;
     private String link;
@@ -32,7 +35,7 @@ public class DownloaderThread extends Thread{
             URL url = new URL(link);
             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
             urlConnection.setRequestMethod("GET");
-            String auth = ScrapperThread.defaultKName+":"+ScrapperThread.defaultKPass;
+            String auth = defaultKName+":"+defaultKPass;
             byte[] encodeAuth = Base64.encodeBase64(
                     auth.getBytes(StandardCharsets.ISO_8859_1)
             );

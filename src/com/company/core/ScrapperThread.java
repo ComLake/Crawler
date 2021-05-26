@@ -27,18 +27,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import static com.company.utils.Annotation.*;
+
 public class ScrapperThread extends Thread {
-    public static String GITHUB_API_BASE_URL = "https://api.github.com/";
-    public static String KAGGLE_API_BASE_URL = "https://www.kaggle.com/api/v1/datasets/";
-    private static String KAGGLE_API_SEARCH = "list?group=public&sortBy=hottest&size=all&filetype=all&license=all&search=";
-    private static String GITHUB_API_SEARCH_REPOSITORIES = "search/repositories?q=";
-    public static String GITHUB_REPOS = "repos/";
-    private static String KAGGLE_PAGE = "&page=1";
-    private String pathDriver = "C:\\selenium\\chromedriver.exe";
-    public static String GITHUB_ZIP_DOWNLOAD = "zipball/master";
-    public static String KAGGLE_ZIP_DOWNLOAD = "download/";
-    public static String defaultKName = "thanhjeff";
-    public static String defaultKPass = "2cd30ce68497dcab0c97efce84937a49";
     private String target;
     private String keySeek;
     private ArrayList<String> sources;
@@ -51,39 +42,30 @@ public class ScrapperThread extends Thread {
 
     @Override
     public void run() {
-        try {
-            initialResources();
-            sleep(1000);
-            train();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public synchronized void initialResources(){
         switch (target) {
             case "kaggle":
                 String k_direct = KAGGLE_API_BASE_URL + KAGGLE_API_SEARCH + keySeek + KAGGLE_PAGE;
                 try {
                     URL direct = new URL(k_direct);
                     HttpURLConnection urlConnection = null;
-                    urlConnection = (HttpURLConnection)direct.openConnection();
+                    urlConnection = (HttpURLConnection) direct.openConnection();
                     urlConnection.setRequestMethod("GET");
-                    String auth = defaultKName+":"+defaultKPass;
+                    String auth = defaultKName + ":" + defaultKPass;
                     byte[] encodeAuth = Base64.encodeBase64(
                             auth.getBytes(StandardCharsets.ISO_8859_1)
                     );
-                    String authHeaderValue = "Basic "+new String(encodeAuth);
-                    urlConnection.setRequestProperty("User-Agent","Mozilla/5.0");
-                    urlConnection.setRequestProperty("Authorization",authHeaderValue);
+                    String authHeaderValue = "Basic " + new String(encodeAuth);
+                    urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+                    urlConnection.setRequestProperty("Authorization", authHeaderValue);
                     int responseCode = urlConnection.getResponseCode();
-                    System.out.println("\nSending 'GET' Request to URL"+k_direct);
-                    System.out.println("Response code :"+responseCode);
+                    System.out.println("\nSending 'GET' Request to URL" + k_direct);
+                    System.out.println("Response code :" + responseCode);
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(urlConnection.getInputStream()));
                     String inputLine;
                     StringBuilder response = new StringBuilder();
-                    while((inputLine = in.readLine())!=null){
-                        response.append(inputLine+"\n");
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine + "\n");
                     }
                     in.close();
                     System.out.println("Result of JSON Object reading response");
@@ -91,7 +73,7 @@ public class ScrapperThread extends Thread {
                     JSONArray kaggleArray = new JSONArray(response.toString());
                     for (int i = 0; i < kaggleArray.length(); i++) {
                         JSONObject kaggleObject = (JSONObject) kaggleArray.get(i);
-                        if (i<2){
+                        if (i < 2) {
                             String dataDownload = kaggleObject.getString("ref");
                             StringBuffer kaggleDownload = new StringBuffer();
                             kaggleDownload.append(KAGGLE_API_BASE_URL);
@@ -147,13 +129,13 @@ public class ScrapperThread extends Thread {
                 }
                 break;
         }
-    }
-    public synchronized void train(){
-        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        configurationManager.setTopic(keySeek);
-        configurationManager.addMoreItems(sources);
-        configurationManager.downloadToWorkPlace();
-        System.out.println("********************************");
-        configurationManager.openSources();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }finally {
+            ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+            configurationManager.addMoreItems(sources);
+        }
     }
 }
