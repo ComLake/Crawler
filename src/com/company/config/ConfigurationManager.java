@@ -47,25 +47,37 @@ public class ConfigurationManager {
                linkBased.append(GITHUB_API_BASE_URL+GITHUB_REPOS);
                downloadPath.append("/"+GITHUB_ZIP_DOWNLOAD);
                texture.append("/");
+                String nameTheZip = link.replaceAll(linkBased.toString(),"");
+                nameTheZip = nameTheZip.replaceAll(downloadPath.toString(),"");
+                nameTheZip = nameTheZip.replaceAll(texture.toString(),"");
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(nameTheZip);
+                buffer.append(".zip");
+                StringBuffer destiny = new StringBuffer();
+                destiny.append(path);
+                destiny.append(buffer);
+                System.out.println("Downloading.. "+buffer + " to "+destiny);
+                DownloaderThread dropInBag = new DownloaderThread(link,destiny.toString());
+                dropInBag.run();
             }else if (link.contains("kaggle")){
                linkBased.append(KAGGLE_API_BASE_URL);
                downloadPath.append(KAGGLE_ZIP_DOWNLOAD);
                texture.append("/");
+                String nameTheZip = link.replaceAll(linkBased.toString(),"");
+                nameTheZip = nameTheZip.replaceAll(downloadPath.toString(),"");
+                nameTheZip = nameTheZip.replaceAll(texture.toString(),"");
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(nameTheZip);
+                buffer.append(".zip");
+                StringBuffer destiny = new StringBuffer();
+                destiny.append(path);
+                destiny.append(buffer);
+                System.out.println("Downloading.. "+buffer + " to "+destiny);
+                DownloaderThread dropInBag = new DownloaderThread(link,destiny.toString());
+                dropInBag.run();
             }else {
                 System.out.println("This version does not supply for this website");
             }
-            String nameTheZip = link.replaceAll(linkBased.toString(),"");
-            nameTheZip = nameTheZip.replaceAll(downloadPath.toString(),"");
-            nameTheZip = nameTheZip.replaceAll(texture.toString(),"");
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(nameTheZip);
-            buffer.append(".zip");
-            StringBuffer destiny = new StringBuffer();
-            destiny.append(path);
-            destiny.append(buffer);
-            System.out.println("Downloading.. "+buffer + " to "+destiny);
-            DownloaderThread dropInBag = new DownloaderThread(link,destiny.toString());
-            dropInBag.run();
         }
     }
     public synchronized void openSources(){

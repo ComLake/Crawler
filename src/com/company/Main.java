@@ -43,7 +43,5 @@ public class Main {
             ScrapperThread scrapperThread = new ScrapperThread(websites,keyword);
             scrapperThread.run();
         }
-//        DownloadWithLink.download_method3("https://www.kaggle.com/gantlaborde/riddikulus/download","D:\\save\\sources\\archive.zip");
-//        ZIP.unzip();
     }
 }

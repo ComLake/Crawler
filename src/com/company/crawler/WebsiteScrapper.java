@@ -2,6 +2,13 @@ package com.company.crawler;
 
 //import com.company.automate.EventCapture;
 import com.company.helper.Helper;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,10 +18,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +36,30 @@ public class WebsiteScrapper {
     public WebsiteScrapper() {
         downloadUrl = new ArrayList<>();
     }
-
+    public void dynamicGETRequestK(){
+//        try {
+//            HttpGet request = new HttpGet("https://www.kaggle.com/api/v1/datasets/list?group=public&sortBy=hottest&size=all&filetype=all&license=all&search=cat&page=1");
+//            String auth = "thanhjeff"+":"+"2cd30ce68497dcab0c97efce84937a49";
+//            byte[]encodeAuth = Base64.encodeBase64(
+//                    auth.getBytes(StandardCharsets.ISO_8859_1)
+//            );
+//            String authHeader = "Basic "+ new String(encodeAuth);
+//            request.setHeader(HttpHeaders.AUTHORIZATION,authHeader);
+//
+//            HttpClient client = HttpClientBuilder.create().build();
+//            HttpResponse response = client.execute(request);
+//            int statusCode = response.getStatusLine().getStatusCode();
+//            System.out.println(statusCode);
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        } catch (HttpException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
     public void dynamicPOSTRequest(String url){
         try {
             URL direct = new URL(url);
@@ -83,13 +111,19 @@ public class WebsiteScrapper {
     }
     public void dynamicGETRequest(){
         try {
-            System.out.println("Please enter the key set ");
-            String search = (new Scanner(System.in).nextLine());
-            String url = GITHUB_API_BASE_URL+GITHUB_API_SEARCH_REPOSITORIES+search;
+//            System.out.println("Please enter the key set ");
+//            String search = (new Scanner(System.in).nextLine());
+            String url = "https://www.kaggle.com/api/v1/datasets/download/crawford/cat-dataset";
             URL direct = new URL(url);
             HttpURLConnection urlConnection = (HttpURLConnection)direct.openConnection();
             urlConnection.setRequestMethod("GET");
+            String auth = "thanhjeff"+":"+"2cd30ce68497dcab0c97efce84937a49";
+            byte[] encodeAuth = Base64.encodeBase64(
+                    auth.getBytes(StandardCharsets.ISO_8859_1)
+            );
+            String authHeaderValue = "Basic "+new String(encodeAuth);
             urlConnection.setRequestProperty("User-Agent","Mozilla/5.0");
+            urlConnection.setRequestProperty("Authorization",authHeaderValue);
             int responseCode = urlConnection.getResponseCode();
             System.out.println("\nSending 'GET' Request to URL"+url);
             System.out.println("Response code :"+responseCode);
@@ -102,18 +136,18 @@ public class WebsiteScrapper {
             }
             in.close();
             System.out.println("Result of JSON Object reading response");
-            System.out.println("---------------------------------------");
-            JSONObject myResponse = new JSONObject(response.toString());
-            JSONArray array = myResponse.getJSONArray("items");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject object = (JSONObject)array.get(i);
-                String target = object.getString("archive_url").replace("{archive_format}{/ref}",GITHUB_ZIP_DOWNLOAD);
-                System.out.println(target);
-                downloadUrl.add(target);
-            }
-            String urlDownload = downloadUrl.get(0);
-            System.out.println("Downloading the zip file"+ urlDownload +" illegally..");
-            System.setProperty("webdriver.chrome.driver",pathDriver);
+            System.out.println(response.toString());
+//            JSONObject myResponse = new JSONObject(response.toString());
+//            JSONArray array = myResponse.getJSONArray("items");
+//            for (int i = 0; i < array.length(); i++) {
+//                JSONObject object = (JSONObject)array.get(i);
+//                String target = object.getString("archive_url").replace("{archive_format}{/ref}",GITHUB_ZIP_DOWNLOAD);
+//                System.out.println(target);
+//                downloadUrl.add(target);
+//            }
+//            String urlDownload = downloadUrl.get(0);
+//            System.out.println("Downloading the zip file"+ urlDownload +" illegally..");
+//            System.setProperty("webdriver.chrome.driver",pathDriver);
 //            WebDriver webDriver = new ChromeDriver(setUpCustomizeBrowser());
 //            EventFiringWebDriver eventDriver = new EventFiringWebDriver(webDriver);
 //            EventCapture listener = new EventCapture();
@@ -126,8 +160,6 @@ public class WebsiteScrapper {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

@@ -2,6 +2,7 @@ package com.company.core;
 
 import com.company.config.ConfigurationManager;
 import com.company.helper.Helper;
+import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,14 +29,16 @@ import java.util.concurrent.TimeUnit;
 
 public class ScrapperThread extends Thread {
     public static String GITHUB_API_BASE_URL = "https://api.github.com/";
-    public static String KAGGLE_API_BASE_URL = "https://www.kaggle.com/";
-    private static String KAGGLE_API_SEARCH = "search?q=";
+    public static String KAGGLE_API_BASE_URL = "https://www.kaggle.com/api/v1/datasets/";
+    private static String KAGGLE_API_SEARCH = "list?group=public&sortBy=hottest&size=all&filetype=all&license=all&search=";
     private static String GITHUB_API_SEARCH_REPOSITORIES = "search/repositories?q=";
     public static String GITHUB_REPOS = "repos/";
+    private static String KAGGLE_PAGE = "&page=1";
     private String pathDriver = "C:\\selenium\\chromedriver.exe";
-    private static String KAGGLE_DATASET = "+in%3Adatasets";
     public static String GITHUB_ZIP_DOWNLOAD = "zipball/master";
-    public static String KAGGLE_ZIP_DOWNLOAD = "/download";
+    public static String KAGGLE_ZIP_DOWNLOAD = "download/";
+    public static String defaultKName = "thanhjeff";
+    public static String defaultKPass = "2cd30ce68497dcab0c97efce84937a49";
     private String target;
     private String keySeek;
     private ArrayList<String> sources;
@@ -42,52 +46,65 @@ public class ScrapperThread extends Thread {
     public ScrapperThread(String target, String keySeek) {
         this.target = target;
         this.keySeek = keySeek;
+        this.sources = new ArrayList<>();
     }
 
     @Override
     public void run() {
-        sources = new ArrayList<>();
+        try {
+            initialResources();
+            sleep(1000);
+            train();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public synchronized void initialResources(){
         switch (target) {
             case "kaggle":
-                String k_direct = KAGGLE_API_BASE_URL + KAGGLE_API_SEARCH + keySeek + KAGGLE_DATASET;
-                System.setProperty("webdriver.chrome.driver", pathDriver);
-                WebDriver webDriver = new ChromeDriver();
-                webDriver.manage().window().maximize();
-                webDriver.manage().deleteAllCookies();
-                webDriver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
-                webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-                webDriver.get(k_direct);
-                List<WebElement> links = null;
+                String k_direct = KAGGLE_API_BASE_URL + KAGGLE_API_SEARCH + keySeek + KAGGLE_PAGE;
                 try {
-                    links = webDriver.findElements(By.tagName("a")); //This will store all the link WebElements into a list
-                    int count = 0;
-                    for(WebElement ele: links)
-                    {
-                        String url = ele.getAttribute("href"); //To get the link you can use getAttribute() method with "href" as an argument
-                        StringBuilder kaggleDownloader = new StringBuilder();
-                        kaggleDownloader.append(url);
-                        kaggleDownloader.append(KAGGLE_ZIP_DOWNLOAD);
-                        String result = kaggleDownloader.toString();
-                        if (count<5){
-                            sources.add(result);
-                            ++count;
+                    URL direct = new URL(k_direct);
+                    HttpURLConnection urlConnection = null;
+                    urlConnection = (HttpURLConnection)direct.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    String auth = defaultKName+":"+defaultKPass;
+                    byte[] encodeAuth = Base64.encodeBase64(
+                            auth.getBytes(StandardCharsets.ISO_8859_1)
+                    );
+                    String authHeaderValue = "Basic "+new String(encodeAuth);
+                    urlConnection.setRequestProperty("User-Agent","Mozilla/5.0");
+                    urlConnection.setRequestProperty("Authorization",authHeaderValue);
+                    int responseCode = urlConnection.getResponseCode();
+                    System.out.println("\nSending 'GET' Request to URL"+k_direct);
+                    System.out.println("Response code :"+responseCode);
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(urlConnection.getInputStream()));
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+                    while((inputLine = in.readLine())!=null){
+                        response.append(inputLine+"\n");
+                    }
+                    in.close();
+                    System.out.println("Result of JSON Object reading response");
+                    System.out.println("----------------------------------------");
+                    JSONArray kaggleArray = new JSONArray(response.toString());
+                    for (int i = 0; i < kaggleArray.length(); i++) {
+                        JSONObject kaggleObject = (JSONObject) kaggleArray.get(i);
+                        if (i<2){
+                            String dataDownload = kaggleObject.getString("ref");
+                            StringBuffer kaggleDownload = new StringBuffer();
+                            kaggleDownload.append(KAGGLE_API_BASE_URL);
+                            kaggleDownload.append(KAGGLE_ZIP_DOWNLOAD);
+                            kaggleDownload.append(dataDownload);
+                            sources.add(kaggleDownload.toString());
                         }
                     }
-                    Thread.sleep(3000);
-                    webDriver.close();
-                    webDriver.quit();
-                } catch (InterruptedException e) {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                for (String link:sources) {
-                    System.out.println(link);
-                }
-                ConfigurationManager configurationManagerK = ConfigurationManager.getInstance();
-                configurationManagerK.setTopic(keySeek);
-                configurationManagerK.addMoreItems(sources);
-                configurationManagerK.downloadToWorkPlace();
-                System.out.println("********************************");
-                configurationManagerK.openSources();
                 break;
             case "github":
                 String url = GITHUB_API_BASE_URL + GITHUB_API_SEARCH_REPOSITORIES + keySeek;
@@ -121,12 +138,6 @@ public class ScrapperThread extends Thread {
                             sources.add(linkSource);
                         }
                     }
-                    ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-                    configurationManager.setTopic(keySeek);
-                    configurationManager.addMoreItems(sources);
-                    configurationManager.downloadToWorkPlace();
-                    System.out.println("********************************");
-                    configurationManager.openSources();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -136,10 +147,13 @@ public class ScrapperThread extends Thread {
                 }
                 break;
         }
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
+    public synchronized void train(){
+        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+        configurationManager.setTopic(keySeek);
+        configurationManager.addMoreItems(sources);
+        configurationManager.downloadToWorkPlace();
+        System.out.println("********************************");
+        configurationManager.openSources();
     }
 }
