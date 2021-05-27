@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import static com.company.utils.Annotation.ULAKE_REGISTER;
+import static com.company.utils.Annotation.ULAKE_SIGN_IN;
 
 public class LoginFrameWork extends Thread {
     @Override
@@ -21,7 +22,36 @@ public class LoginFrameWork extends Thread {
             System.out.println("Do you have an account?[Y/N]");
             String accountExist = (new Scanner(System.in)).nextLine();
             if (accountExist.equals("Y")) {
-
+                Thread.sleep(1000);
+                System.out.println("-------------Sign in--------------");
+                System.out.println("\n**************username**************");
+                String username = (new Scanner(System.in)).nextLine();
+                System.out.println("\n**************password**************");
+                String password = (new Scanner(System.in)).nextLine();
+                URL direct = new URL(ULAKE_SIGN_IN);
+                HttpURLConnection urlConnection = (HttpURLConnection) direct.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json; utf-8");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.setDoOutput(true);
+                String jsonInputString = "{\n" +
+                        "  \"username\": \"" + username + "\",\n" +
+                        "  \"password\": \"" + password + "\"\n" +
+                        "}";
+                try (OutputStream outputStream = urlConnection.getOutputStream()) {
+                    byte[] input = jsonInputString.getBytes("UTF-8");
+                    outputStream.write(input, 0, input.length);
+                }
+                try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                        urlConnection.getInputStream(),"UTF-8"
+                ))){
+                    StringBuffer response = new StringBuffer();
+                    String responseLine = null;
+                    while ((responseLine = bufferedReader.readLine())!=null){
+                        response.append(responseLine.trim());
+                    }
+                    System.out.println(response.toString());
+                }
             } else if (accountExist.equals("N")) {
                 Thread.sleep(1000);
                 System.out.println("Register access ...");
@@ -50,13 +80,12 @@ public class LoginFrameWork extends Thread {
                 urlConnection.setDoOutput(true);
                 StringBuilder roleBuilder = new StringBuilder();
                 if (roles.size() > 0) {
-                    roleBuilder.append( "    \""+roles.get(0)+"\"\n");
+                    roleBuilder.append("    \"" + roles.get(0) + "\"\n");
                 }
                 for (int i = 1; i < roles.size(); i++) {
                     roleBuilder.append(",");
-                    roleBuilder.append("    \""+roles.get(i)+"\"\n");
+                    roleBuilder.append("    \"" + roles.get(i) + "\"\n");
                 }
-                System.out.println(roleBuilder.toString());
                 String jsonInputString = "{\n" +
                         "  \"username\": \"" + username + "\",\n" +
                         "  \"email\": \"" + email + "\",\n" +
