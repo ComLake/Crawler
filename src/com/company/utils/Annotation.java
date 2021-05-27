@@ -1,6 +1,7 @@
 package com.company.utils;
 
 public class Annotation {
+    public static String ULAKE_REGISTER = "http://localhost:5000/api/auth/signup";
     public static String GITHUB_API_BASE_URL = "https://api.github.com/";
     public static String KAGGLE_API_BASE_URL = "https://www.kaggle.com/api/v1/datasets/";
     public static String KAGGLE_API_SEARCH = "list?group=public&sortBy=hottest&size=all&filetype=all&license=all&search=";

@@ -1,5 +1,6 @@
 package com.company.config;
 
+import com.company.cooporate.LoginFrameWork;
 import com.company.core.DownloaderThread;
 import com.company.core.ScrapperThread;
 import com.company.core.UnpackingThread;
@@ -27,7 +28,6 @@ public class ConfigurationManager {
         }
         return configurationManager;
     }
-
     public void addMoreItems(ArrayList<String> items) {
         if (items.size() != 0) {
             for (int i = 0; i < items.size(); i++) {
@@ -82,6 +82,10 @@ public class ConfigurationManager {
                 System.out.println("This version does not supply for this website");
             }
         }
+    }
+    public void authenticate(){
+        LoginFrameWork loginFrameWork = new LoginFrameWork();
+        loginFrameWork.run();
     }
     public synchronized void openSources(){
         for (EmbeddedFile zipFile:zipTarget) {

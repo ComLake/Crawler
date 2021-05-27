@@ -28,9 +28,24 @@ public class Main {
                 "//\\ \\  /  /    \\         /\n" +
                 "V  \\ \\/  /      \\       /\n" +
                 "    \\___/        \\_____/");
-
+        System.out.println("***ULAKE PROJECT COOPERATION***");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("------------------------");
-        System.out.println("Give me a name");
+        System.out.println("Welcome to Worm Crawler");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
+        configurationManager.authenticate();
+        System.out.println("Authenticated!");
+        System.out.println("*********************************************************");
+        System.out.println("What do you wanna search ?");
         String keyword = new Scanner(System.in).nextLine();
         System.out.println("How many website you wanna scrap ? ");
         int n = new Scanner(System.in).nextInt();
@@ -40,7 +55,6 @@ public class Main {
             nameThatWebsites.add(target);
         }
         System.out.println("\n-----------------------------------------");
-        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
         configurationManager.setTopic(keyword);
         configurationManager.addWebsitesTarget(nameThatWebsites);
         System.out.println("Begin scrapped");

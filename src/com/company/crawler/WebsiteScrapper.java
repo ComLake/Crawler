@@ -62,10 +62,14 @@ public class WebsiteScrapper {
     }
     public void dynamicPOSTRequest(String url){
         try {
+            ArrayList<String>role = new ArrayList<>();
+            role.add("admin");
+            role.add("tester");
             URL direct = new URL(url);
             Map<String,Object> params = new LinkedHashMap<>();
             params.put("data","Thiet");
             params.put("age","22");
+            params.put("role",(Object) role);
             StringBuilder postData = new StringBuilder();
             for (Map.Entry<String,Object>param : params.entrySet()) {
                 if (postData.length()!=0) {
