@@ -1,6 +1,7 @@
 package com.company.config;
 
 import com.company.cooporate.LoginFrameWork;
+import com.company.cooporate.RefreshFrameWork;
 import com.company.core.DownloaderThread;
 import com.company.core.ScrapperThread;
 import com.company.core.UnpackingThread;
@@ -9,6 +10,7 @@ import com.company.utils.EmbeddedFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.company.core.ScrapperThread.*;
 import static com.company.utils.Annotation.*;
@@ -20,6 +22,8 @@ public class ConfigurationManager {
     private List<String> sources = new ArrayList<>();
     private List<EmbeddedFile> zipTarget = new ArrayList<>();
     private String topic;
+    private String tokenULake;
+    private String refreshTokenULake;
     public ConfigurationManager() {
     }
     public static ConfigurationManager getInstance() {
@@ -84,8 +88,18 @@ public class ConfigurationManager {
         }
     }
     public void authenticate(){
+        System.out.println("Do you have an account?[Y/N]");
+        String accountExist = (new Scanner(System.in)).nextLine();
         LoginFrameWork loginFrameWork = new LoginFrameWork();
+        loginFrameWork.setAccountExist(accountExist);
         loginFrameWork.run();
+        if (accountExist.equals("N")){
+            System.out.println("----------------Verify the account--------------");
+            LoginFrameWork verifyFrameWork = new LoginFrameWork();
+            verifyFrameWork.setAccountExist("Y");
+            verifyFrameWork.run();
+        }
+        System.out.println("tokenKey:"+tokenULake+":::"+"refreshToken:"+refreshTokenULake);
     }
     public synchronized void openSources(){
         for (EmbeddedFile zipFile:zipTarget) {
@@ -116,5 +130,28 @@ public class ConfigurationManager {
     }
     public String getTopic() {
         return topic;
+    }
+
+    public String getTokenULake() {
+        return tokenULake;
+    }
+
+    public void setTokenULake(String tokenULake) {
+        this.tokenULake = tokenULake;
+    }
+
+    public String getRefreshTokenULake() {
+        return refreshTokenULake;
+    }
+
+    public void setRefreshTokenULake(String refreshTokenULake) {
+        this.refreshTokenULake = refreshTokenULake;
+    }
+    public void refreshToken(){
+        RefreshFrameWork refreshFrameWork = new RefreshFrameWork();
+        refreshFrameWork.setToken(tokenULake);
+        refreshFrameWork.setRefreshToken(refreshTokenULake);
+        refreshFrameWork.run();
+        System.out.println("new token: "+tokenULake+":::"+"new refreshToken: "+refreshTokenULake);
     }
 }

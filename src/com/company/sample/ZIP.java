@@ -1,6 +1,4 @@
-package com.company.model;
-
-import com.company.core.EmbeddingThread;
+package com.company.sample;
 
 import java.io.*;
 import java.util.ArrayList;

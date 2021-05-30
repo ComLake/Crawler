@@ -16,6 +16,7 @@ import java.util.Map;
 public class UploaderThread extends Thread {
     private URL direct;
     private SimpleDocument document;
+    private boolean isExit;
 
     public UploaderThread(SimpleDocument document) {
         this.document = document;
@@ -23,6 +24,7 @@ public class UploaderThread extends Thread {
     }
 
     private void init() {
+        isExit = false;
         try {
             direct = new URL("https://jsonplaceholder.typicode.com/posts");
         } catch (MalformedURLException e) {
@@ -73,6 +75,12 @@ public class UploaderThread extends Thread {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            closeThread();
+            System.out.println("["+this.getClass().getName()+"]:"+this.isAlive());
         }
+    }
+    public void closeThread(){
+        isExit = true;
     }
 }

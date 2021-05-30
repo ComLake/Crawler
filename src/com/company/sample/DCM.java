@@ -1,4 +1,4 @@
-package com.company.model;
+package com.company.sample;
 
 import com.pixelmed.dicom.*;
 import com.pixelmed.display.SourceImage;

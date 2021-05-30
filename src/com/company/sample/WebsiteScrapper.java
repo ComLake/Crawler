@@ -1,7 +1,6 @@
-package com.company.crawler;
+package com.company.sample;
 
 //import com.company.automate.EventCapture;
-import com.company.helper.Helper;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHeaders;
@@ -197,7 +196,7 @@ public class WebsiteScrapper {
                     webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[4]/div[2]/div/div/div[2]/div[2]/div[2]/a[1]/li/div/div[2]/div[2]/h6")).click();
                     Thread.sleep(1000);
                     webDriver.findElement(By.xpath("/html/body/main/div[1]/div/div[5]/div[3]/div[1]/div/div/div[2]/div[2]/div[1]/div[2]/a")).click();
-                    Helper.attackDownloadingFile(webDriver);
+//                    Helper.attackDownloadingFile(webDriver);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
