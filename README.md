@@ -4,7 +4,11 @@
 
 Crawler Website, Data Analysis using JAVA
 
-## Getting Started
+## Description
+In the problem of determining business objectives, collecting the appropriate data to obtain the business objectives and analysing to identify it properly, a data lake is an effective solution that has the ability to handle virtually any type of data with limitless scale and capacity and store all of the organization of raw data for future work.
+In the goal of making a data lake management system, my data acquisition and integration tool has the role of a website crawler that can seek and frequently ingests data through API processes and automated testing framework. Then the application extracts the data to standard data and send to interface web dashboard and DataLakeAPI, supplying the resources for DataLakeCore and other parts of DataLakeServices 
+
+## Subject Aim
 
  Development of Data Acquisition and Integration Tool for Data Lake
 
@@ -15,7 +19,12 @@ Crawler Website, Data Analysis using JAVA
 ## Target users :
 For everyone 
 
-## Prerequisites
+## Expected outcomes:
+Minimum 500 Gb of :
+-	CT, X-ray scan of the human Body
+-	Environment data : weather,..
+- Remote sensing photos
+
 
 
 **Download and setup JDK, Chrome**
@@ -28,9 +37,12 @@ For everyone
 * ### Run tests
 
 
-## Built With
+## Used methods and Techniques
 
 * [JAVA](https://www.java.com/en/) - Main Programming Language
+* UML, Object-oriented Analysis and Design
+* HTML
+
 
 ## Contributing
 
