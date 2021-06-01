@@ -61,8 +61,9 @@ public class KaggleCrawler extends Crawler{
                         }
                         outputStream.close();
                         inputStream.close();
-                        ScrapperCenter manager = ScrapperCenter.getInstance();
-                        manager.storageReport(path,link);
+                        if (listener!=null){
+                            listener.storageReport(path,link);
+                        }
                         System.out.println("Downloaded!");
                     }else {
                         System.out.println("file is already exist");

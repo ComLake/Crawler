@@ -2,6 +2,7 @@ package com.company.downloader;
 
 import com.company.config.utils.EmbeddedFile;
 import com.company.downloader.target.Crawler;
+import com.company.downloader.target.CrawlerInterface;
 import com.company.downloader.target.GithubCrawler;
 import com.company.downloader.target.KaggleCrawler;
 import org.checkerframework.checker.units.qual.C;
@@ -12,21 +13,20 @@ import java.util.List;
 
 import static com.company.config.utils.Annotation.*;
 
-public class ScrapperCenter {
+public class ScrapperCenter implements CrawlerInterface {
     private String topic;
     private final String path = "D:\\save\\sources\\";
     private List<String> sources = new ArrayList<>();
     private List<EmbeddedFile> zipTarget = new ArrayList<>();
     private static ScrapperCenter scrapperCenter;
-    private Crawler gitHubCrawler = new GithubCrawler();
-    private Crawler kaggleCrawler = new KaggleCrawler();
+    private Crawler gitHubCrawler;
+    private Crawler kaggleCrawler;
 
-    public void addMoreItems(ArrayList<String> items) {
-        if (items.size() != 0) {
-            for (int i = 0; i < items.size(); i++) {
-                sources.add(items.get(i));
-            }
-        }
+    public ScrapperCenter() {
+        gitHubCrawler = new GithubCrawler();
+        kaggleCrawler = new KaggleCrawler();
+        gitHubCrawler.setListener(this);
+        kaggleCrawler.setListener(this);
     }
     public static ScrapperCenter getInstance(){
         if (scrapperCenter==null){
@@ -91,12 +91,6 @@ public class ScrapperCenter {
             System.out.println(embeddedFile.getFile().getName());
         }
     }
-    public void storageReport(String fishFile,String linkSource){
-        File file = new File(fishFile);
-        if (file.exists()){
-            zipTarget.add(new EmbeddedFile(linkSource,file));
-        }
-    }
 
     public String getTopic() {
         return topic;
@@ -104,5 +98,22 @@ public class ScrapperCenter {
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    @Override
+    public void storageReport(String file,String link) {
+        File fileSaved = new File(file);
+        if (fileSaved.exists()){
+            zipTarget.add(new EmbeddedFile(link,fileSaved));
+        }
+    }
+
+    @Override
+    public void updateSources(ArrayList<String> sourcesLink) {
+        if (sourcesLink.size() != 0) {
+            for (int i = 0; i < sourcesLink.size(); i++) {
+                sources.add(sourcesLink.get(i));
+            }
+        }
     }
 }

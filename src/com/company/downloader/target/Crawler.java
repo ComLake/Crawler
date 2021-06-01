@@ -5,6 +5,7 @@ import com.company.downloader.ScrapperCenter;
 import java.util.ArrayList;
 
 public abstract class Crawler {
+    protected CrawlerInterface listener;
     protected ArrayList<String>sources;
     protected String keySeek;
     protected boolean isExit;
@@ -26,6 +27,10 @@ public abstract class Crawler {
         return keySeek;
     }
 
+    public void setListener(CrawlerInterface listener) {
+        this.listener = listener;
+    }
+
     public void setKeySeek(String keySeek) {
         this.keySeek = keySeek;
     }
@@ -38,7 +43,8 @@ public abstract class Crawler {
         isExit = true;
     }
     public void saveLinks(){
-        ScrapperCenter scrapperCenter = ScrapperCenter.getInstance();
-        scrapperCenter.addMoreItems(sources);
+        if (listener!=null){
+            listener.updateSources(sources);
+        }
     }
 }
