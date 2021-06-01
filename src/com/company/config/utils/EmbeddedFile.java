@@ -1,4 +1,4 @@
-package com.company.utils;
+package com.company.config.utils;
 
 import java.io.File;
 

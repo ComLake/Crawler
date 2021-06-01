@@ -1,15 +1,14 @@
 package com.company;
 
-import com.company.config.ConfigurationManager;
-import com.company.cooporate.RefreshFrameWork;
-import com.company.cooporate.UploadFrameWork;
-import com.company.file_config.ImageFile;
-import org.apache.commons.codec.binary.Base64;
+import com.company.authenticate.Authentication;
+import com.company.config.manager.ConfigurationManager;
+import com.company.downloader.ScrapperCenter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static com.company.config.utils.Annotation.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -37,8 +36,16 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ConfigurationManager configurationManager = ConfigurationManager.getInstance();
-        configurationManager.authenticate();
+        Authentication authentication = Authentication.getInstance();
+        System.out.println("Do you have any account?[Y/N]");
+        String exitsAccount = (new Scanner(System.in)).nextLine();
+        if (exitsAccount.equals("Y")){
+            authentication.login();
+        }else if (exitsAccount.equals("N")){
+            authentication.register();
+        }else {
+            System.out.println("Access denied");
+        }
         System.out.println("Authenticated!");
         System.out.println("*********************************************************");
         System.out.println("What do you wanna search ?");
@@ -50,18 +57,23 @@ public class Main {
             String target = new Scanner(System.in).nextLine();
             nameThatWebsites.add(target);
         }
-        System.out.println("\n-----------------------------------------");
-        configurationManager.setTopic(keyword);
-        configurationManager.addWebsitesTarget(nameThatWebsites);
-        System.out.println("Begin scrapped");
-        configurationManager.scrapped();
-        System.out.println("End scrapped");
-        System.out.println("Begin download");
-        configurationManager.downloadToWorkPlace();
-        System.out.println("********************************");
-        System.out.println("End download");
-        System.out.println("Begin unpack");
-        configurationManager.openSources();
-        System.out.println("End unpack");
+        ScrapperCenter scrapperManager = ScrapperCenter.getInstance();
+        scrapperManager.setTopic(keyword);
+        for (String target : nameThatWebsites) {
+            scrapperManager.scrapper(target);
+        }
+        scrapperManager.downloader();
+//        configurationManager.setTopic(keyword);
+//        configurationManager.addWebsitesTarget(nameThatWebsites);
+//        System.out.println("Begin scrapped");
+//        configurationManager.scrapped();
+//        System.out.println("End scrapped");
+//        System.out.println("Begin download");
+//        configurationManager.downloadToWorkPlace();
+//        System.out.println("********************************");
+//        System.out.println("End download");
+//        System.out.println("Begin unpack");
+//        configurationManager.openSources();
+//        System.out.println("End unpack");
     }
 }

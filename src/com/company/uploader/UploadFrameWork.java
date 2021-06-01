@@ -1,19 +1,14 @@
-package com.company.cooporate;
+package com.company.uploader;
 
-import com.company.file_config.ImageFile;
 import okhttp3.*;
-import org.apache.commons.codec.binary.Base64;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 
-import static com.company.utils.Annotation.ULAKE_UPLOAD_FILE;
+import static com.company.config.utils.Annotation.ULAKE_UPLOAD_FILE;
 
 public class UploadFrameWork extends Thread {
     private boolean isExit;

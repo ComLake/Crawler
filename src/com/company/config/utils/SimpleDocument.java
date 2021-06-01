@@ -1,4 +1,4 @@
-package com.company.utils;
+package com.company.config.utils;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;

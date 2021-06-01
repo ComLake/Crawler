@@ -1,4 +1,4 @@
-package com.company.utils;
+package com.company.config.utils;
 
 public class Annotation {
     public static String ULAKE_REGISTER = "http://localhost:5000/api/auth/signup";

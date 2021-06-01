@@ -1,6 +1,6 @@
-package com.company.core;
+package com.company.uploader;
 
-import com.company.utils.SimpleDocument;
+import com.company.config.utils.SimpleDocument;
 
 import java.io.File;
 

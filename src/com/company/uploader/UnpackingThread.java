@@ -1,6 +1,6 @@
-package com.company.core;
+package com.company.uploader;
 
-import com.company.utils.EmbeddedFile;
+import com.company.config.utils.EmbeddedFile;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
