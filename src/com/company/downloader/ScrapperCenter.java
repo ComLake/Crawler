@@ -17,7 +17,7 @@ public class ScrapperCenter implements CrawlerInterface {
     private String topic;
     private final String path = "D:\\save\\sources\\";
     private List<String> sources = new ArrayList<>();
-    private List<EmbeddedFile> zipTarget = new ArrayList<>();
+    private ArrayList<EmbeddedFile> zipTarget = new ArrayList<>();
     private static ScrapperCenter scrapperCenter;
     private Crawler gitHubCrawler;
     private Crawler kaggleCrawler;
@@ -115,5 +115,9 @@ public class ScrapperCenter implements CrawlerInterface {
                 sources.add(sourcesLink.get(i));
             }
         }
+    }
+
+    public ArrayList<EmbeddedFile> getZipTarget() {
+        return zipTarget;
     }
 }

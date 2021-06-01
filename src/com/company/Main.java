@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.authenticate.Authentication;
 import com.company.config.manager.ConfigurationManager;
+import com.company.config.utils.EmbeddedFile;
 import com.company.downloader.ScrapperCenter;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import static com.company.config.utils.Annotation.*;
 
 public class Main {
     public static void main(String[] args) {
+        ArrayList<EmbeddedFile>filesSaved = new ArrayList<>();
         List<String> nameThatWebsites = new ArrayList<>();
         System.out.println("                           (o)(o)\n" +
                 "                          /     \\\n" +
@@ -64,8 +66,11 @@ public class Main {
         }
         scrapperManager.downloader();
         System.out.println("End download");
-//        System.out.println("Begin unpack");
-//        configurationManager.openSources();
-//        System.out.println("End unpack");
+        System.out.println("Begin unpack");
+        ConfigurationManager configManager = ConfigurationManager.getInstance();
+        configManager.setToken(authentication.getToken());
+        configManager.collectEncodeFiles(scrapperManager.getZipTarget());
+        configManager.unPack();
+        System.out.println("End unpack");
     }
 }

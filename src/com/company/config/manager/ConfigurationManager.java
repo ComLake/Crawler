@@ -1,23 +1,19 @@
 package com.company.config.manager;
 
 import com.company.config.utils.EmbeddedFile;
-import com.company.uploader.UnpackingThread;
+import com.company.uploader.UploadingFileHandler;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-import static com.company.config.utils.Annotation.*;
-
-public class ConfigurationManager {
+public class ConfigurationManager{
     private static ConfigurationManager configurationManager;
-    private final String path = "D:\\save\\sources\\";
-    private List<String>websites = new ArrayList<>();
-    private List<String> sources = new ArrayList<>();
-    private List<EmbeddedFile> zipTarget = new ArrayList<>();
+    private ArrayList<EmbeddedFile> zipTarget = new ArrayList<>();
     private String topic;
-    private String tokenULake;
-    private String refreshTokenULake;
+    private String token;
+    private UnpackZippedFile unpackZippedFile;
     public ConfigurationManager() {
     }
     public static ConfigurationManager getInstance() {
@@ -26,32 +22,17 @@ public class ConfigurationManager {
         }
         return configurationManager;
     }
-    public void addMoreItems(ArrayList<String> items) {
-        if (items.size() != 0) {
-            for (int i = 0; i < items.size(); i++) {
-                sources.add(items.get(i));
-            }
-        }
-    }
-    public void storageReport(String fishFile,String linkSource){
-        File file = new File(fishFile);
-        if (file.exists()){
-            zipTarget.add(new EmbeddedFile(linkSource,file));
-        }
-    }
-    public synchronized void openSources(){
+    public void unPack(){
         for (EmbeddedFile zipFile:zipTarget) {
             System.out.println("** Unzipping "+zipFile.getFile().getName()+" ...");
-            UnpackingThread openSource = new UnpackingThread();
-            openSource.setTargetZFile(zipFile);
-            openSource.setKeySearch(topic);
-            openSource.run();
+            unpackZippedFile = new UnpackZippedFile();
+            unpackZippedFile.unpacking(zipFile,token);
         }
     }
-    public void addWebsitesTarget(List<String>mainDirects){
-        if (mainDirects.size()!=0){
-            for (String website:mainDirects) {
-                websites.add(website);
+    public void collectEncodeFiles(ArrayList<EmbeddedFile>embeddedFiles){
+        if (embeddedFiles!=null){
+            for (EmbeddedFile embeddedFile:embeddedFiles) {
+                zipTarget.add(embeddedFile);
             }
         }
     }
@@ -62,19 +43,74 @@ public class ConfigurationManager {
         return topic;
     }
 
-    public String getTokenULake() {
-        return tokenULake;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public void setTokenULake(String tokenULake) {
-        this.tokenULake = tokenULake;
-    }
+    public static class UnpackZippedFile{
+        private boolean isExit;
 
-    public String getRefreshTokenULake() {
-        return refreshTokenULake;
-    }
+        public UnpackZippedFile() {
+            isExit = false;
+        }
 
-    public void setRefreshTokenULake(String refreshTokenULake) {
-        this.refreshTokenULake = refreshTokenULake;
+        public void unpacking(EmbeddedFile targetZFile,String token){
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    while (!isExit){
+                        try {
+                            File targetFile = targetZFile.getFile();
+                            String source = targetFile.getAbsolutePath();
+                            String des = source.replace(".zip","");
+                            File file = new File(des);
+                            if (!file.exists()){
+                                file.mkdirs();
+                            }
+                            byte []bytes = new byte[1024];
+                            FileInputStream fInputStream = new FileInputStream(targetFile);
+                            ZipInputStream zipInputStream = new ZipInputStream(fInputStream);
+                            ZipEntry entry ;
+                            while ((entry = zipInputStream.getNextEntry()) !=null){
+                                StringBuffer buffer = new StringBuffer();
+                                buffer.append(des);
+                                String finalPath = buffer.append(File.separator+entry.getName()).toString();
+                                File newBie = new File(finalPath);
+                                if (entry.isDirectory()){
+                                    if (!newBie.isDirectory()&&!newBie.mkdirs()){
+                                        throw new IOException("Failed to create directory"+newBie);
+                                    }
+                                }else {
+                                    File parent = newBie.getParentFile();
+                                    if (!parent.isDirectory()&&!parent.mkdirs()){
+                                        throw new IOException("Failed to create directory"+parent);
+                                    }
+                                    FileOutputStream fOS = new FileOutputStream(newBie);
+                                    int length;
+                                    while ((length = zipInputStream.read(bytes))!=-1){
+                                        fOS.write(bytes,0,length);
+                                    }
+                                    fOS.close();
+                                }
+                                new UploadingFileHandler().upload(newBie,token);
+                            }
+                            zipInputStream.closeEntry();
+                            zipInputStream.close();
+                            System.out.println("Successfully unzipped");
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }finally {
+                            onStop();
+                        }
+                    }
+                }
+            };
+            runnable.run();
+        }
+        public void onStop(){
+            isExit = true;
+        }
     }
 }
