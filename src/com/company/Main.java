@@ -63,15 +63,7 @@ public class Main {
             scrapperManager.scrapper(target);
         }
         scrapperManager.downloader();
-//        configurationManager.setTopic(keyword);
-//        configurationManager.addWebsitesTarget(nameThatWebsites);
-//        System.out.println("Begin scrapped");
-//        configurationManager.scrapped();
-//        System.out.println("End scrapped");
-//        System.out.println("Begin download");
-//        configurationManager.downloadToWorkPlace();
-//        System.out.println("********************************");
-//        System.out.println("End download");
+        System.out.println("End download");
 //        System.out.println("Begin unpack");
 //        configurationManager.openSources();
 //        System.out.println("End unpack");

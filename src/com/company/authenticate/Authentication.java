@@ -1,6 +1,5 @@
 package com.company.authenticate;
 
-import com.company.config.manager.ConfigurationManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,29 +13,32 @@ import java.util.Scanner;
 
 import static com.company.config.utils.Annotation.*;
 
-public class Authentication {
+public class Authentication implements AuthenticationInterface{
     private static Authentication authentication;
     private String token;
     private String refreshToken;
-
+    private HandleInformation handleInformation;
     public static Authentication getInstance(){
         if (authentication==null){
             authentication = new Authentication();
         }
         return authentication;
     }
+
+    public Authentication() {
+        handleInformation = new HandleInformation();
+        handleInformation.setTokenAndRefreshToken(this);
+    }
+
     public void login(){
-        HandleInformation handleInformation = new HandleInformation();
         handleInformation.loginAccount();
     }
     public void register(){
-        HandleInformation handleInformation = new HandleInformation();
         handleInformation.createAccount();
         System.out.println("--------------------Verify account--------------------");
         handleInformation.loginAccount();
     }
     public void refreshToken(){
-        HandleInformation handleInformation = new HandleInformation();
         handleInformation.setToken(token);
         handleInformation.setRefreshToken(refreshToken);
         handleInformation.refreshToken();
@@ -56,10 +58,22 @@ public class Authentication {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    @Override
+    public void updateToken(String token, String refreshToken) {
+        setToken(token);
+        setRefreshToken(refreshToken);
+    }
+
     public static class HandleInformation{
         private boolean isExit;
         private String token;
         private String refreshToken;
+        private AuthenticationInterface TokenAndRefreshToken;
+
+        public void setTokenAndRefreshToken(AuthenticationInterface tokenAndRefreshToken) {
+            this.TokenAndRefreshToken = tokenAndRefreshToken;
+        }
 
         private void createAccount(){
             isExit = false;
@@ -186,9 +200,9 @@ public class Authentication {
                                 JSONObject jsonObject = new JSONObject(response.toString());
                                 String refreshToken = jsonObject.getString("refreshToken");
                                 String token = jsonObject.getString("accessToken");
-                                Authentication authentication = Authentication.getInstance();
-                                authentication.setToken(token);
-                                authentication.setRefreshToken(refreshToken);
+                                if (TokenAndRefreshToken !=null){
+                                    TokenAndRefreshToken.updateToken(token,refreshToken);
+                                }
                             }
                         } catch (InterruptedException | IOException e) {
                             e.printStackTrace();
@@ -239,15 +253,15 @@ public class Authentication {
                             JSONObject jsonObject = new JSONObject(response.toString());
                             token = jsonObject.getString("token");
                             refreshToken = jsonObject.getString("refreshToken");
-                            Authentication authentication = Authentication.getInstance();
-                            authentication.setToken(token);
-                            authentication.setRefreshToken(refreshToken);
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+                        if (TokenAndRefreshToken !=null){
+                            TokenAndRefreshToken.updateToken(token,refreshToken);
                         }
                         stop();
                     }
