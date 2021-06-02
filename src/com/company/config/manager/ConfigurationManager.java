@@ -1,7 +1,7 @@
 package com.company.config.manager;
 
 import com.company.config.utils.EmbeddedFile;
-import com.company.uploader.UploadingFileHandler;
+import com.company.uploader.UploadHandler;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class ConfigurationManager{
                                     }
                                     fOS.close();
                                 }
-                                new UploadingFileHandler().upload(newBie,token);
+                                new UploadHandler().upload(newBie,token);
                             }
                             zipInputStream.closeEntry();
                             zipInputStream.close();

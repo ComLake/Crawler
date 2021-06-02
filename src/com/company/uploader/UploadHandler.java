@@ -14,9 +14,9 @@ import java.util.Map;
 
 import static com.company.config.utils.Annotation.ULAKE_UPLOAD_FILE;
 import com.company.config.manager.ConfigurationManager.UnpackZippedFile;
-public class UploadingFileHandler{
+public class UploadHandler {
     private boolean isExit;
-    public UploadingFileHandler() {
+    public UploadHandler() {
         isExit = false;
     }
     private void onStop(){
