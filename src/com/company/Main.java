@@ -13,7 +13,7 @@ import static com.company.config.utils.Annotation.*;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<EmbeddedFile>filesSaved = new ArrayList<>();
+        List<EmbeddedFile>savedFiles = new ArrayList<>();
         List<String> nameThatWebsites = new ArrayList<>();
         System.out.println("                           (o)(o)\n" +
                 "                          /     \\\n" +
@@ -48,6 +48,7 @@ public class Main {
         }else {
             System.out.println("Access denied");
         }
+        String token = authentication.getToken();
         System.out.println("Authenticated!");
         System.out.println("*********************************************************");
         System.out.println("What do you wanna search ?");
@@ -68,7 +69,7 @@ public class Main {
         System.out.println("End download");
         System.out.println("Begin unpack");
         ConfigurationManager configManager = ConfigurationManager.getInstance();
-        configManager.setToken(authentication.getToken());
+        configManager.setToken(token);
         configManager.collectEncodeFiles(scrapperManager.getZipTarget());
         configManager.unPack();
         System.out.println("End unpack");

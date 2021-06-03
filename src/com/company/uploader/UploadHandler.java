@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.company.config.utils.Annotation.ULAKE_UPLOAD_FILE;
-import com.company.config.manager.ConfigurationManager.UnpackZippedFile;
 public class UploadHandler {
     private boolean isExit;
     public UploadHandler() {
@@ -29,28 +28,29 @@ public class UploadHandler {
             @Override
             public void run() {
                 while (!isExit){
-                    try {
-                        URL direct = new URL(ULAKE_UPLOAD_FILE);
-                        OkHttpClient client = new OkHttpClient.Builder().build();
-                        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                                .addFormDataPart("file", file.getAbsolutePath(),
-                                        RequestBody.create(MediaType.parse("application/octet-stream"),
-                                                file))
-                                .build();
-                        Request request = new Request.Builder().
-                                url(direct).
-                                method("POST", body).
-                                addHeader("Authorization", "Bearer "+token)
-                                .build();
-                        Response response = client.newCall(request).execute();
-                        System.out.println(response.toString());
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        onStop();
-                    }
+//                    try {
+//                        URL direct = new URL(ULAKE_UPLOAD_FILE);
+//                        OkHttpClient client = new OkHttpClient.Builder().build();
+//                        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//                                .addFormDataPart("file", file.getAbsolutePath(),
+//                                        RequestBody.create(MediaType.parse("application/octet-stream"),
+//                                                file))
+//                                .build();
+//                        Request request = new Request.Builder().
+//                                url(direct).
+//                                method("POST", body).
+//                                addHeader("Authorization", "Bearer "+token)
+//                                .build();
+//                        Response response = client.newCall(request).execute();
+//                        System.out.println(response.toString());
+//                    } catch (MalformedURLException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } finally {
+//                        onStop();
+//                    }
+                    uploadTest(file);
                 }
             }
         };
@@ -94,6 +94,8 @@ public class UploadHandler {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            onStop();
         }
     }
     private void urlHttpConnectionPost(URL direct, File fileSend) {
