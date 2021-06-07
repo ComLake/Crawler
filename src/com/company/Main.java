@@ -15,16 +15,6 @@ public class Main {
     public static void main(String[] args) {
         List<EmbeddedFile>savedFiles = new ArrayList<>();
         List<String> nameThatWebsites = new ArrayList<>();
-        System.out.println("                           (o)(o)\n" +
-                "                          /     \\\n" +
-                "                         /       |\n" +
-                "                        /   \\  * |\n" +
-                "          ________     /    /\\__/\n" +
-                "  _      /        \\   /    /\n" +
-                " / \\    /  ____    \\_/    /\n" +
-                "//\\ \\  /  /    \\         /\n" +
-                "V  \\ \\/  /      \\       /\n" +
-                "    \\___/        \\_____/");
         System.out.println("***ULAKE PROJECT COOPERATION***");
         try {
             Thread.sleep(1000);
