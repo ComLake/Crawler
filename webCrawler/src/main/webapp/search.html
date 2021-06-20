@@ -6,7 +6,7 @@
   <meta name="description" content="Scrapper dataset from keyword">
   <meta name="keywords" content="scrapper, crawler, dataset">
   <meta name="author" content="Thiet Nguyen">
-  <title>Home</title>
+  <title>Crawler Center | Search</title>
   <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
   <style>
       body{
@@ -153,6 +153,34 @@
       header .logout{
       margin: 0;
       }
+      input[type="checkbox"]{
+      position: relative;
+      width: 50px;
+      height: 25px;
+      -webkit-appearance: none;
+      background: #c6c6c6;
+      outline: none;
+      border-radius: 20px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+      input:checked[type="checkbox"]{
+      background: #0288d1;
+      }
+      input[type="checkbox"]:before{
+      content: '';
+      width: 25px;
+      position: absolute;
+      height: 25px;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      background: #fff;
+      transform: scale(1.1);
+      transition: 0.5s;
+      }
+      input:checked[type="checkbox"]:before{
+      left: 25px;
+      }
     </style>
 </head>
 <body>
@@ -198,11 +226,13 @@
       <img src="images/github.png">
       <h3>Github API</h3>
       <p>Download zip files from your topic</p>
+      <div class="checkbox"><input name="" type="checkbox"></div>
     </div>
     <div class="box">
       <img src="images/k.png">
       <h3>Kaggle API</h3>
       <p>Download zip files from your topic</p>
+      <div class="checkbox"><input name="" type="checkbox"></div>
     </div>
     <div class="box">
       <img src="images/web.png">
