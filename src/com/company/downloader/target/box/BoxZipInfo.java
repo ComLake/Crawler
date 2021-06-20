@@ -1,4 +1,4 @@
-package com.company.downloader.target;
+package com.company.downloader.target.box;
 
 import java.net.MalformedURLException;
 import java.net.URL;

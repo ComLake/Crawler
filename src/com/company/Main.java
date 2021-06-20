@@ -1,6 +1,8 @@
 package com.company;
 
-import com.company.downloader.target.BoxCrawler;
+import com.company.downloader.target.box.BoxCrawler;
+import com.company.downloader.target.dropbox.DropBoxCrawler;
+import com.company.downloader.target.dropbox.ScrapperAPIDropbox;
 
 public class Main {
     public static void main(String[] args) {
@@ -54,6 +56,6 @@ public class Main {
 //        configManager.collectEncodeFiles(scrapperManager.getZipTarget());
 //        configManager.unPack();
 //        System.out.println("End unpack");
-        new BoxCrawler().search();
+        new DropBoxCrawler().checkAccount();
     }
 }

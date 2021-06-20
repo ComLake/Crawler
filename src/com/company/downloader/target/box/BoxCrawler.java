@@ -1,15 +1,8 @@
-package com.company.downloader.target;
+package com.company.downloader.target.box;
 
 
 import com.box.sdk.*;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.*;
-import org.jose4j.lang.JoseException;
-import org.json.JSONObject;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
