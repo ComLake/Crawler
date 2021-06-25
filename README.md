@@ -52,3 +52,5 @@ Just a small part of the big ComLake
 
 * **Nguyen An Thiet** - *USTHBI8 -174* - [JeffKi11er](https://github.com/JeffKi11er) -<Fresher Java, Android>
 
+## Mindstones
+* [Update new version : V2](https://github.com/ComLake/comlake.webScrapper)
